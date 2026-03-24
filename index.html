@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Imane Chichi ♡ Our Love Story</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0d0518">
@@ -15,7 +15,7 @@
        ROOT VARIABLES & RESET
     ========================================= */
     :root {
-      --bg-deep: #0d0518;
+      --bg-deep: #0d0518; --bg-bright: rgba(26,10,46,0.85);
       --bg-mid: #1a0a2e;
       --bg-surface: #2a1040;
       --primary: #e8a4b8;
@@ -1356,6 +1356,94 @@
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+    }
+
+    /* =========================================
+       BRIGHTNESS & PHONE OPTIMIZATION FIXES
+    ========================================= */
+    
+    /* Make backgrounds brighter and clearer */
+    .panel-inner, #treeSection {
+        background-blend-mode: overlay !important;
+    }
+    
+    /* Increase contrast for better visibility */
+    .panel-body, .letter-card, .song-card, .dream-item, .event-card, .quote-card {
+        backdrop-filter: blur(12px) brightness(1.2) !important;
+        background: rgba(26,10,46,0.7) !important;
+    }
+    
+    /* Make text brighter and more readable */
+    body, .panel-title, .letter-text, .song-name, .dream-text, .event-name, .quote-text {
+        text-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+    }
+    
+    /* Fix for mobile touch targets */
+    .fruit-btn, .pin-key, .icon-btn, .btn {
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+    }
+    
+    /* Ensure backgrounds cover properly on all devices */
+    #treeSection, .panel-inner {
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+    }
+    
+    /* Fix viewport for mobile */
+    @media (max-width: 768px) {
+        .panel-inner {
+            max-height: 90vh !important;
+        }
+        .fruit-btn {
+            width: 55px !important;
+            height: 55px !important;
+            font-size: 1.2rem !important;
+        }
+        .fruit-btn span.fruit-label {
+            font-size: 0.45rem !important;
+        }
+        .top-bar-title {
+            font-size: 1rem !important;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 10vw, 4rem) !important;
+        }
+    }
+    
+    /* Increase brightness for all backgrounds */
+    #lettersPanel .panel-inner, #songsPanel .panel-inner, #hairPanel .panel-inner,
+    #galleryPanel .panel-inner, #quotesPanel .panel-inner, #eventsPanel .panel-inner,
+    #dreamsPanel .panel-inner, #timelinePanel .panel-inner, #secretPanel .panel-inner,
+    #settingsPanel .panel-inner, #gamePanel .panel-inner, #voicePanel .panel-inner,
+    #mapPanel .panel-inner {
+        background-blend-mode: normal !important;
+    }
+    
+    /* Make tree section brighter */
+    #treeSection {
+        background-blend-mode: normal !important;
+    }
+    
+    /* Better contrast for text on backgrounds */
+    .panel-body {
+        background: rgba(13,5,24,0.6) !important;
+        border-radius: 20px;
+        margin: 0.5rem;
+        padding: 1rem !important;
+    }
+    
+    /* Ensure all text is readable */
+    .letter-text, .dream-text, .timeline-desc, .map-note-text {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important;
+    }
+    
+    .panel-title, .event-name, .timeline-title, .map-note-title {
+        color: #ffb8d0 !important;
+        text-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
     }
 
 </style>
@@ -3173,5 +3261,12 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
 });
 </script>
+<script>    // Touch optimization for phone
+    document.addEventListener('touchstart', function(e) {
+        if (e.target.closest('.fruit-btn') || e.target.closest('.pin-key') || e.target.closest('.icon-btn')) {
+            e.target.style.transform = 'scale(0.95)';
+            setTimeout(() => { e.target.style.transform = ''; }, 150);
+        }
+    }, { passive: true });</script>
 </body>
 </html>
