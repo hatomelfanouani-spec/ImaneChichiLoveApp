@@ -24,8 +24,8 @@ def twaManifest = [
     applicationId: 'io.github.hatomelfanouani_spec.twa',
     hostName: 'hatomelfanouani-spec.github.io', // The domain being opened in the TWA.
     launchUrl: '/ImaneChichiLoveApp/', // The start path for the TWA. Must be relative to the domain.
-    name: 'Imane ♡ Love Story', // The application name.
-    launcherName: 'Imane ♡', // The name shown on the Android Launcher.
+    name: 'Imane Love Story', // The application name.
+    launcherName: 'Imane', // The name shown on the Android Launcher.
     themeColor: '#FF4D6D', // The color used for the status bar.
     themeColorDark: '#000000', // The color used for the dark status bar.
     navigationColor: '#000000', // The color used for the navigation bar.
@@ -207,6 +207,10 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    
+        implementation 'com.google.androidbrowserhelper:locationdelegation:1.1.2'
+    
+        implementation 'com.google.androidbrowserhelper:billing:1.1.0'
     
         implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.6.2'
     

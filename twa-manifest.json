@@ -1,8 +1,8 @@
 {
   "packageId": "io.github.hatomelfanouani_spec.twa",
   "host": "hatomelfanouani-spec.github.io",
-  "name": "Imane ♡ Love Story",
-  "launcherName": "Imane ♡",
+  "name": "Imane Love Story",
+  "launcherName": "Imane",
   "display": "standalone",
   "themeColor": "#FF4D6D",
   "themeColorDark": "#000000",
@@ -14,7 +14,6 @@
   "enableNotifications": true,
   "startUrl": "/ImaneChichiLoveApp/",
   "iconUrl": "https://hatomelfanouani-spec.github.io/ImaneChichiLoveApp/icons/icon-512.png",
-  "maskableIconUrl": "https://hatomelfanouani-spec.github.io/ImaneChichiLoveApp/icons/icon-512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "C:\\Users\\hatom\\OneDrive\\Desktop\\imane-love-app\\android.keystore",
@@ -26,7 +25,14 @@
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://hatomelfanouani-spec.github.io/ImaneChichiLoveApp/manifest.json",
   "fallbackType": "customtabs",
-  "features": {},
+  "features": {
+    "playBilling": {
+      "enabled": true
+    },
+    "locationDelegation": {
+      "enabled": true
+    }
+  },
   "alphaDependencies": {
     "enabled": false
   },
