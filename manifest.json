@@ -1,13 +1,13 @@
 {
-  "name": "Imane Chichi ♡ Our Love Story",
+  "name": "Imane ♡ Love Story",
   "short_name": "Imane ♡",
   "description": "A cinematic love story — a private world of memories, music, and love.",
-  "start_url": "/ImaneChichiLoveApp/index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0d0518",
   "theme_color": "#ff4d6d",
   "orientation": "portrait",
-  "scope": "/ImaneChichiLoveApp/",
   "lang": "en",
   "icons": [
     {
