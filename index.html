@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
   <title>Imane Chichi ♡ Our Love Story</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0d0518">
@@ -1612,6 +1612,53 @@
     .fruit-btn:active, .pin-key:active, .icon-btn:active {
       transform: scale(0.95) !important;
       transition: transform 0.05s ease !important;
+    }
+
+    /* =========================================
+       FORCE MOBILE BACKGROUNDS (FIX)
+    ========================================= */
+    
+    /* Force all panel backgrounds on mobile */
+    @media (max-width: 768px) {
+        .panel-inner {
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        #lettersPanel .panel-inner { background: url('backgrounds/love-letters-bg.png') center center / cover no-repeat !important; }
+        #songsPanel .panel-inner { background: url('backgrounds/music-bg.png') center center / cover no-repeat !important; }
+        #hairPanel .panel-inner { background: url('backgrounds/tree-bg.png') center center / cover no-repeat !important; }
+        #galleryPanel .panel-inner { background: url('backgrounds/gallery-bg.png') center center / cover no-repeat !important; }
+        #quotesPanel .panel-inner { background: url('backgrounds/quotes-bg.png') center center / cover no-repeat !important; }
+        #eventsPanel .panel-inner { background: url('backgrounds/map-bg.png') center center / cover no-repeat !important; }
+        #dreamsPanel .panel-inner { background: url('backgrounds/dreams-bg.png') center center / cover no-repeat !important; }
+        #timelinePanel .panel-inner { background: url('backgrounds/timeline-bg.png') center center / cover no-repeat !important; }
+        #secretPanel .panel-inner { background: url('backgrounds/hero-bg.png') center center / cover no-repeat !important; }
+        #settingsPanel .panel-inner { background: url('backgrounds/settings-bg.png') center center / cover no-repeat !important; }
+        #gamePanel .panel-inner { background: url('backgrounds/game-bg.png') center center / cover no-repeat !important; }
+        #voicePanel .panel-inner { background: url('backgrounds/music-bg.png') center center / cover no-repeat !important; }
+        #mapPanel .panel-inner { background: url('backgrounds/map-bg.png') center center / cover no-repeat !important; }
+        
+        /* Force tree background on mobile */
+        #treeSection {
+            background: url('backgrounds/tree-bg.png') center center / cover no-repeat fixed !important;
+        }
+        
+        /* Make panel content visible */
+        .panel-body {
+            background: rgba(13,5,24,0.75) !important;
+            backdrop-filter: blur(10px) !important;
+            border-radius: 20px !important;
+            margin: 10px !important;
+            padding: 15px !important;
+        }
+        
+        /* Ensure text is readable */
+        .letter-text, .dream-text, .timeline-desc, .quote-text, .event-msg {
+            color: white !important;
+            text-shadow: 0 0 5px black !important;
+        }
     }
 
 </style>
@@ -3436,5 +3483,32 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { e.target.style.transform = ''; }, 150);
         }
     }, { passive: true });</script>
+<script>
+// Force background images to load on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    // Force all backgrounds to reload
+    var panels = document.querySelectorAll('.panel');
+    panels.forEach(function(panel) {
+        var inner = panel.querySelector('.panel-inner');
+        if (inner) {
+            var bgImage = window.getComputedStyle(inner).backgroundImage;
+            if (bgImage && bgImage !== 'none') {
+                // Trigger reflow
+                inner.style.display = 'none';
+                inner.offsetHeight;
+                inner.style.display = '';
+            }
+        }
+    });
+    
+    // Force tree background
+    var treeSection = document.getElementById('treeSection');
+    if (treeSection) {
+        treeSection.style.backgroundImage = 'url(backgrounds/tree-bg.png)';
+    }
+    
+    console.log('Mobile backgrounds forced reloaded');
+});
+</script>
 </body>
 </html>
