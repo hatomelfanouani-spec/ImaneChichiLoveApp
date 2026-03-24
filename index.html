@@ -502,6 +502,23 @@
     .panel-body { padding: 0 1.5rem 2rem; }
 
     /* =========================================
+       ROMANTIC BACKGROUNDS FOR ALL PANELS
+    ========================================= */
+    #lettersPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/love-letters-bg.png'); background-size: cover; background-position: center; }
+    #songsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/music-bg.png'); background-size: cover; background-position: center; }
+    #hairPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/tree-bg.png'); background-size: cover; background-position: center; }
+    #galleryPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/gallery-bg.png'); background-size: cover; background-position: center; }
+    #quotesPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/quotes-bg.png'); background-size: cover; background-position: center; }
+    #eventsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/map-bg.png'); background-size: cover; background-position: center; }
+    #dreamsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/dreams-bg.png'); background-size: cover; background-position: center; }
+    #timelinePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/timeline-bg.png'); background-size: cover; background-position: center; }
+    #secretPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/hero-bg.png'); background-size: cover; background-position: center; }
+    #settingsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/settings-bg.png'); background-size: cover; background-position: center; }
+    #gamePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/game-bg.png'); background-size: cover; background-position: center; }
+    #voicePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/music-bg.png'); background-size: cover; background-position: center; }
+    #mapPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/map-bg.png'); background-size: cover; background-position: center; }
+
+    /* =========================================
        LOVE LETTERS PANEL
     ========================================= */
     .letter-compose {
@@ -1428,7 +1445,6 @@
 
     <!-- Tree with Fruits -->
     <div class="tree-container">
-      <!-- SVG Tree -->
       <svg id="treeCanvas" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
         <!-- Tree trunk -->
         <defs>
@@ -1931,14 +1947,14 @@ let state = {
   themeColorIdx: 0,
   currentSongIdx: -1,
   isPlaying: false,
-  songs: [], // {name, dataUrl, isFav}
-  letters: [], // {id, text, date}
-  photos: [], // {id, dataUrl}
-  hairStyles: [], // {name, color}
+  songs: [],
+  letters: [],
+  photos: [],
+  hairStyles: [],
   currentHairColor: '#3d2314',
-  dreams: [], // {id, text, done}
-  voiceRecordings: [], // {id, name, dataUrl}
-  mapNotes: [], // {id, place, memory}
+  dreams: [],
+  voiceRecordings: [],
+  mapNotes: [],
   gameScore: 0,
   gameHighScore: 0,
   gameActive: false,
@@ -1951,7 +1967,6 @@ function loadState() {
     if (saved) {
       const parsed = JSON.parse(saved);
       Object.assign(state, parsed);
-      // Re-init non-serializable
       state.pinEntry = '';
       state.isPlaying = false;
       state.gameActive = false;
@@ -1965,7 +1980,6 @@ function saveState() {
     delete toSave.pinEntry;
     localStorage.setItem('imaneApp', JSON.stringify(toSave));
   } catch(e) {
-    // IndexedDB fallback or silent fail for large data
     console.warn('Storage full, trying to save without media');
   }
 }
@@ -2161,7 +2175,6 @@ function openPanel(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Panel-specific init
   if (id === 'timelinePanel') revealTimeline();
   if (id === 'eventsPanel') renderEvents();
   if (id === 'secretPanel') updateSecretUI();
@@ -2173,7 +2186,6 @@ function closePanel(id) {
   document.body.style.overflow = '';
 }
 
-// Close on backdrop click
 document.querySelectorAll('.panel').forEach(panel => {
   panel.addEventListener('click', (e) => {
     if (e.target === panel) closePanel(panel.id);
@@ -2401,8 +2413,6 @@ function toggleBgMusic() {
   document.getElementById('bgMusicBtn').textContent = state.bgMusicOn ? '🔇' : '🎵';
   const toggle = document.getElementById('bgMusicToggle');
   if (toggle) toggle.checked = state.bgMusicOn;
-  // In a real app, this would play a default background track
-  // For now we show a notification
   if (state.bgMusicOn) {
     showToast('🎵 Background music enabled');
   } else {
@@ -2546,7 +2556,6 @@ const EVENTS_DATA = [
   {
     name: 'Eid Al Fitr 🌙',
     getDate: () => {
-      // Approximate Eid Al Fitr dates
       const eidDates2026 = new Date('2026-03-20');
       return eidDates2026 < new Date() ? new Date('2027-03-09') : eidDates2026;
     },
@@ -2562,12 +2571,12 @@ const EVENTS_DATA = [
   },
   {
     name: 'Our Anniversary 🌹',
-    getDate: () => getNextDate(7, 9), // July 9
+    getDate: () => getNextDate(7, 9),
     msg: 'The day our story began. Every year on this day, I fall in love with you all over again. Happy Anniversary, my heart! 💕',
   },
   {
     name: "Imane's Birthday 🎂",
-    getDate: () => getNextDate(4, 17), // April 17
+    getDate: () => getNextDate(4, 17),
     msg: "Happy Birthday to the most wonderful person in my world! On the day you were born, the stars aligned to create something extraordinary — you! 🎂✨",
   },
 ];
@@ -2592,7 +2601,6 @@ function renderEvents() {
     `;
   }).join('');
 
-  // Live update countdowns
   if (document.getElementById('eventsPanel').classList.contains('open')) {
     setTimeout(renderEvents, 1000);
   }
@@ -2844,7 +2852,6 @@ function spawnGameHeart() {
 
 function drawGame() {
   gameCtx.clearRect(0, 0, gameW, gameH);
-  // Background
   gameCtx.fillStyle = 'rgba(13,5,24,0.85)';
   gameCtx.fillRect(0, 0, gameW, gameH);
 
@@ -3049,7 +3056,6 @@ function triggerConfetti() {
 }
 
 function triggerMiniConfetti() {
-  // Smaller burst
   const colors = ['#e8a4b8','#d4a064','#a78bca'];
   for (let i = 0; i < 40; i++) {
     confParticles.push({
@@ -3138,7 +3144,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHero();
   animateParticles();
 
-  // Restore settings UI
   const themeToggle = document.getElementById('themeToggle');
   if (themeToggle) themeToggle.checked = state.theme === 'light';
 
