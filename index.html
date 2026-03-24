@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* =========================================
-       ROOT VARIABLES & RESET (ORIGINAL - UNCHANGED)
+       ROOT VARIABLES & RESET
     ========================================= */
     :root {
       --bg-deep: #0d0518;
@@ -502,25 +502,7 @@
     .panel-body { padding: 0 1.5rem 2rem; }
 
     /* =========================================
-       NEW ROMANTIC BACKGROUNDS (ADDED)
-       These add your beautiful images without altering any existing styles
-    ========================================= */
-    #lettersPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/love-letters-bg.png'); background-size: cover; background-position: center; }
-    #songsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/music-bg.png'); background-size: cover; background-position: center; }
-    #hairPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/tree-bg.png'); background-size: cover; background-position: center; }
-    #galleryPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/gallery-bg.png'); background-size: cover; background-position: center; }
-    #quotesPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/quotes-bg.png'); background-size: cover; background-position: center; }
-    #eventsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/map-bg.png'); background-size: cover; background-position: center; }
-    #dreamsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/dreams-bg.png'); background-size: cover; background-position: center; }
-    #timelinePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/timeline-bg.png'); background-size: cover; background-position: center; }
-    #secretPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/hero-bg.png'); background-size: cover; background-position: center; }
-    #settingsPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/settings-bg.png'); background-size: cover; background-position: center; }
-    #gamePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/game-bg.png'); background-size: cover; background-position: center; }
-    #voicePanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/music-bg.png'); background-size: cover; background-position: center; }
-    #mapPanel .panel-inner { background: linear-gradient(180deg, rgba(26,10,46,0.85), rgba(13,5,24,0.95)), url('backgrounds/map-bg.png'); background-size: cover; background-position: center; }
-
-    /* =========================================
-       LOVE LETTERS PANEL (RESTORED)
+       LOVE LETTERS PANEL
     ========================================= */
     .letter-compose {
       background: var(--glass);
@@ -581,10 +563,779 @@
 
     .letter-delete:hover { color: #ff6b6b; }
 
-    /* The rest of your original styles (song-card, gallery, etc.) are preserved exactly as they were.
-       For brevity, I'm truncating here, but in the final file they are all included. */
-    /* ... (remaining original CSS continues unchanged) ... */
+    /* =========================================
+       SONGS PANEL
+    ========================================= */
+    .song-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
+    .song-card:hover, .song-card.active {
+      background: rgba(232,164,184,0.1);
+      border-color: var(--primary);
+    }
+
+    .song-art {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .song-card.active .song-art { animation: spin 4s linear infinite; }
+
+    .song-info { flex: 1; min-width: 0; }
+    .song-name {
+      font-family: var(--font-display);
+      color: var(--text); font-size: 0.95rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .song-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+    .song-fav { color: var(--text-muted); cursor: pointer; font-size: 1.1rem; }
+    .song-fav.active { color: var(--primary); }
+
+    /* Mini player */
+    .mini-player {
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      background: rgba(26,10,46,0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 60px;
+      padding: 0.6rem 1.2rem;
+      display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px var(--glow-pink);
+      min-width: 260px; max-width: 90vw;
+      transition: all 0.3s ease;
+    }
+
+    .mini-player.hidden { transform: translateX(-50%) translateY(100px); opacity: 0; }
+
+    .player-art {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    .player-art.spinning { animation: spin 3s linear infinite; }
+
+    .player-info { flex: 1; min-width: 0; }
+    .player-name { font-size: 0.8rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .player-sub { font-size: 0.7rem; color: var(--text-muted); }
+
+    .player-ctrl {
+      display: flex; gap: 0.5rem; align-items: center;
+    }
+
+    .player-btn {
+      background: none; border: none;
+      color: var(--text-soft); cursor: pointer;
+      font-size: 1.1rem; transition: color 0.2s;
+      padding: 0.2rem;
+    }
+
+    .player-btn:hover { color: var(--primary); }
+    .player-btn.play-btn {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent2));
+      border-radius: 50%;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* Visualizer */
+    #visualizerCanvas {
+      width: 100%; height: 60px;
+      display: block;
+    }
+
+    /* =========================================
+       HAIR COLORS PANEL
+    ========================================= */
+    .hair-preview {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid var(--glass-border);
+    }
+
+    .hair-face {
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, #f5c5a3 0%, #e8a87c 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+
+    .hair-overlay {
+      position: absolute; top: 0; left: 0; right: 0; height: 50%;
+      border-radius: 0 0 40% 40%;
+      transition: background 0.4s ease;
+    }
+
+    .color-swatch-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 0.6rem; margin-bottom: 1.5rem;
+    }
+
+    .color-swatch {
+      aspect-ratio: 1; border-radius: 50%;
+      cursor: pointer; border: 3px solid transparent;
+      transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .color-swatch:hover, .color-swatch.active {
+      border-color: white; transform: scale(1.15);
+    }
+
+    .saved-styles {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+
+    .saved-style {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .saved-style:hover { border-color: var(--primary); }
+
+    .saved-style-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      margin: 0 auto 0.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .saved-style-name { font-size: 0.8rem; color: var(--text-soft); }
+
+    /* =========================================
+       GALLERY PANEL
+    ========================================= */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1; border-radius: 12px;
+      overflow: hidden; cursor: pointer;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-item:hover { transform: scale(1.03); }
+
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item .gallery-delete {
+      position: absolute; top: 4px; right: 4px;
+      background: rgba(0,0,0,0.6); border: none;
+      border-radius: 50%; color: white; width: 24px; height: 24px;
+      cursor: pointer; font-size: 0.7rem;
+      display: none; align-items: center; justify-content: center;
+    }
+
+    .gallery-item:hover .gallery-delete { display: flex; }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.95);
+      display: none; align-items: center; justify-content: center;
+    }
+
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; }
+    #lightbox-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      color: white; font-size: 2rem; cursor: pointer; background: none; border: none;
+    }
+
+    /* =========================================
+       QUOTES PANEL
+    ========================================= */
+    .quote-card {
+      background: linear-gradient(135deg, rgba(232,164,184,0.08), rgba(167,139,202,0.06));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .quote-text {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .quote-author {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    /* =========================================
+       EVENTS PLANNER
+    ========================================= */
+    .event-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .event-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .event-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+
+    .countdown-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .countdown-item {
+      background: rgba(232,164,184,0.1);
+      border-radius: 10px; padding: 0.6rem;
+    }
+
+    .countdown-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--gold);
+      display: block;
+    }
+
+    .countdown-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+
+    .event-msg {
+      margin-top: 1rem;
+      font-style: italic;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    /* =========================================
+       DREAMS & GOALS
+    ========================================= */
+    .dream-item {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 0.7rem;
+      transition: all 0.2s ease;
+    }
+
+    .dream-check {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--primary);
+      cursor: pointer; flex-shrink: 0;
+      transition: all 0.2s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .dream-check.done {
+      background: var(--primary);
+      color: white;
+    }
+
+    .dream-text {
+      flex: 1;
+      font-family: var(--font-body);
+      color: var(--text);
+    }
+
+    .dream-text.done {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .dream-delete {
+      background: none; border: none;
+      color: var(--text-muted); cursor: pointer; font-size: 0.9rem;
+    }
+
+    .dream-delete:hover { color: #ff6b6b; }
+
+    /* =========================================
+       TIMELINE
+    ========================================= */
+    .timeline {
+      position: relative; padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0.6rem; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--accent2), transparent);
+    }
+
+    .timeline-item {
+      position: relative; margin-bottom: 2rem;
+      opacity: 0; transform: translateX(-20px);
+      transition: all 0.5s ease;
+    }
+
+    .timeline-item.revealed { opacity: 1; transform: translateX(0); }
+
+    .timeline-dot {
+      position: absolute; left: -2.1rem; top: 0.2rem;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--bg-deep);
+      box-shadow: 0 0 10px var(--glow-pink);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem; color: var(--accent);
+      letter-spacing: 0.1em; margin-bottom: 0.3rem;
+    }
+
+    .timeline-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem; color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-desc {
+      font-style: italic;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* =========================================
+       SECRET HEART SECTION
+    ========================================= */
+    .secret-heart-area {
+      text-align: center; padding: 2rem;
+    }
+
+    .big-heart {
+      font-size: 5rem;
+      cursor: pointer;
+      display: inline-block;
+      transition: transform 0.15s ease;
+      filter: drop-shadow(0 0 20px var(--glow-pink));
+    }
+
+    .big-heart:active { transform: scale(0.85); }
+
+    .secret-progress {
+      width: 200px; height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px; overflow: hidden;
+      margin: 1rem auto;
+    }
+
+    .secret-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--gold));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .secret-hint {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .secret-unlocked {
+      background: linear-gradient(135deg, rgba(232,164,184,0.15), rgba(212,160,100,0.1));
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      display: none;
+    }
+
+    .secret-unlocked.show { display: block; animation: fadeInUp 0.6s ease; }
+
+    .secret-msg {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* =========================================
+       SETTINGS PANEL
+    ========================================= */
+    .settings-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .settings-label {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .settings-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.7rem 0;
+    }
+
+    .settings-row label {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    /* Toggle */
+    .toggle {
+      position: relative; width: 48px; height: 26px;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-slider {
+      position: absolute; cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.15);
+      border-radius: 13px;
+      transition: 0.3s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      height: 20px; width: 20px;
+      left: 3px; bottom: 3px;
+      background: white; border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle input:checked + .toggle-slider { background: var(--primary-dark); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+    /* Range input */
+    .range-input {
+      width: 120px;
+      accent-color: var(--primary);
+    }
+
+    /* Color picker row */
+    .theme-colors {
+      display: flex; gap: 0.6rem; flex-wrap: wrap;
+    }
+
+    .theme-color-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid transparent; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-color-btn:hover, .theme-color-btn.active {
+      border-color: white; transform: scale(1.15);
+    }
+
+    /* =========================================
+       MINI GAME PANEL
+    ========================================= */
+    .game-area {
+      text-align: center; padding: 1rem;
+      position: relative;
+    }
+
+    #gameCanvas {
+      width: 100%; max-width: 380px;
+      height: 300px; display: block;
+      margin: 0 auto;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      cursor: crosshair;
+    }
+
+    .game-score {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      margin: 0.5rem 0;
+    }
+
+    .game-info { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* =========================================
+       VOICE RECORDER
+    ========================================= */
+    .recorder-btn {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent2));
+      border: none;
+      color: white; font-size: 2rem;
+      cursor: pointer; margin: 1rem auto;
+      display: block;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 20px var(--glow-pink);
+    }
+
+    .recorder-btn.recording {
+      animation: pulse-record 1s ease-in-out infinite;
+      background: linear-gradient(135deg, #ff4466, #cc2244);
+    }
+
+    .recording-item {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    /* =========================================
+       LOVE MAP
+    ========================================= */
+    .map-note {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .map-note-title {
+      font-family: var(--font-display);
+      color: var(--primary); margin-bottom: 0.3rem;
+    }
+
+    .map-note-text {
+      color: var(--text-soft);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    /* =========================================
+       UTILITY COMPONENTS
+    ========================================= */
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent2));
+      border: none; color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--glow-pink);
+      color: white;
+    }
+
+    .upload-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 1rem;
+      border: 2px dashed var(--glass-border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      margin-bottom: 1rem;
+    }
+
+    .upload-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(232,164,184,0.05);
+    }
+
+    input[type="file"] { display: none; }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 0.8rem;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: var(--primary);
+    }
+
+    .flex-row { display: flex; gap: 0.8rem; align-items: center; }
+    .flex-col { display: flex; flex-direction: column; gap: 0.8rem; }
+    .text-center { text-align: center; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      background: rgba(232,164,184,0.15);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    /* =========================================
+       CONFETTI
+    ========================================= */
+    #confettiCanvas {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 500;
+    }
+
+    /* =========================================
+       SCROLL PROGRESS
+    ========================================= */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; z-index: 200;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      transition: width 0.1s linear;
+    }
+
+    /* =========================================
+       FLOATING CLICK HEARTS
+    ========================================= */
+    .float-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 400;
+      font-size: 1.5rem;
+      animation: float-up 1.2s ease-out forwards;
+    }
+
+    @keyframes float-up {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-120px) scale(0.5); }
+    }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================= */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    @keyframes pulse-glow {
+      0%,100% { text-shadow: 0 0 20px var(--glow-pink); }
+      50% { text-shadow: 0 0 40px var(--glow-pink), 0 0 60px var(--glow-purple); }
+    }
+
+    @keyframes pulse-record {
+      0%,100% { box-shadow: 0 0 0 0 rgba(255,68,102,0.4); }
+      50% { box-shadow: 0 0 0 20px rgba(255,68,102,0); }
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0.3); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes wave {
+      0%,100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+
+    /* =========================================
+       SCROLLBAR
+    ========================================= */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-dark);
+      border-radius: 2px;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+    @media (max-width: 380px) {
+      .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+      .color-swatch-grid { grid-template-columns: repeat(5, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -677,10 +1428,105 @@
 
     <!-- Tree with Fruits -->
     <div class="tree-container">
+      <!-- SVG Tree -->
       <svg id="treeCanvas" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
-        <!-- (Tree SVG content unchanged) -->
+        <!-- Tree trunk -->
+        <defs>
+          <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8a4b8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#e8a4b8" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="trunkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6b3a1f"/>
+            <stop offset="50%" stop-color="#8b5a2b"/>
+            <stop offset="100%" stop-color="#6b3a1f"/>
+          </linearGradient>
+          <radialGradient id="foliageGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#4a7c4e"/>
+            <stop offset="60%" stop-color="#2d5a31"/>
+            <stop offset="100%" stop-color="#1a3d1c"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Glow -->
+        <ellipse cx="200" cy="440" rx="100" ry="20" fill="rgba(232,164,184,0.1)"/>
+
+        <!-- Trunk -->
+        <path d="M175,460 Q180,380 185,320 Q190,280 188,240" stroke="url(#trunkGrad)" stroke-width="22" fill="none" stroke-linecap="round"/>
+        <path d="M225,460 Q220,380 215,320 Q210,280 212,240" stroke="url(#trunkGrad)" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <rect x="175" y="430" width="50" height="40" rx="8" fill="url(#trunkGrad)"/>
+
+        <!-- Main branches -->
+        <path d="M200,300 Q160,260 120,220" stroke="#5a3018" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M200,300 Q240,260 280,220" stroke="#5a3018" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M200,260 Q170,230 150,190" stroke="#5a3018" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M200,260 Q230,230 250,190" stroke="#5a3018" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M200,240 Q200,200 200,170" stroke="#5a3018" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+        <!-- Sub branches -->
+        <path d="M120,220 Q100,195 80,180" stroke="#4a2810" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M280,220 Q300,195 320,180" stroke="#4a2810" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M150,190 Q130,165 115,150" stroke="#4a2810" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M250,190 Q270,165 285,150" stroke="#4a2810" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+        <!-- Foliage clusters -->
+        <ellipse cx="200" cy="120" rx="110" ry="85" fill="url(#foliageGrad)" opacity="0.95"/>
+        <ellipse cx="120" cy="160" rx="75" ry="65" fill="url(#foliageGrad)" opacity="0.9"/>
+        <ellipse cx="280" cy="160" rx="75" ry="65" fill="url(#foliageGrad)" opacity="0.9"/>
+        <ellipse cx="200" cy="90" rx="75" ry="60" fill="#3a6a3e" opacity="0.8"/>
+        <ellipse cx="150" cy="130" rx="60" ry="50" fill="#3a6a3e" opacity="0.7"/>
+        <ellipse cx="250" cy="130" rx="60" ry="50" fill="#3a6a3e" opacity="0.7"/>
+
+        <!-- Highlight on foliage -->
+        <ellipse cx="180" cy="95" rx="40" ry="30" fill="rgba(100,200,80,0.12)"/>
+
+        <!-- Grass -->
+        <ellipse cx="200" cy="462" rx="130" ry="18" fill="#2d5a1a" opacity="0.6"/>
       </svg>
-      <!-- Fruit buttons unchanged -->
+
+      <!-- Fruit buttons overlaid -->
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(220,80,100,0.7),rgba(180,50,70,0.7));left:22%;top:32%"
+        onclick="fruitClick(this, 'lettersPanel')">
+        💌<span class="fruit-label">Letters</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(100,180,80,0.7),rgba(70,140,60,0.7));right:22%;top:32%"
+        onclick="fruitClick(this, 'songsPanel')">
+        🎵<span class="fruit-label">Songs</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(180,120,220,0.7),rgba(140,80,200,0.7));left:14%;top:18%"
+        onclick="fruitClick(this, 'hairPanel')">
+        💇<span class="fruit-label">Hair</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(220,160,80,0.7),rgba(180,120,40,0.7));right:14%;top:18%"
+        onclick="fruitClick(this, 'galleryPanel')">
+        📸<span class="fruit-label">Gallery</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(240,120,160,0.7),rgba(200,80,120,0.7));left:50%;top:8%;transform:translateX(-50%)"
+        onclick="fruitClick(this, 'quotesPanel')">
+        🌺<span class="fruit-label">Quotes</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(80,160,220,0.7),rgba(40,120,180,0.7));left:8%;top:46%"
+        onclick="fruitClick(this, 'eventsPanel')">
+        🌙<span class="fruit-label">Events</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(240,200,80,0.7),rgba(200,160,40,0.7));right:8%;top:46%"
+        onclick="fruitClick(this, 'dreamsPanel')">
+        ✨<span class="fruit-label">Dreams</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(200,100,160,0.7),rgba(160,60,120,0.7));left:50%;top:55%;transform:translateX(-50%)"
+        onclick="fruitClick(this, 'timelinePanel')">
+        📜<span class="fruit-label">Timeline</span>
+      </button>
+      <button class="fruit-btn" style="background:linear-gradient(135deg,rgba(240,80,120,0.7),rgba(200,40,80,0.7));left:50%;top:68%;transform:translateX(-50%)"
+        onclick="fruitClick(this, 'secretPanel')">
+        🔐<span class="fruit-label">Secret</span>
+      </button>
+    </div>
+
+    <!-- More buttons below tree -->
+    <div class="flex-row" style="justify-content:center;flex-wrap:wrap;gap:0.7rem;margin-top:1rem">
+      <button class="btn" onclick="openPanel('voicePanel')">🎤 Voice Messages</button>
+      <button class="btn" onclick="openPanel('mapPanel')">🗺️ Love Map</button>
     </div>
   </section>
 
@@ -700,32 +1546,1610 @@
 
 </div><!-- end mainApp -->
 
-<!-- Lightbox -->
+<!-- ============ LIGHTBOX ============ -->
 <div id="lightbox" onclick="closeLightbox()">
   <button id="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightboxImg" src="" alt="">
 </div>
 
 <!-- ===================================
-     PANELS (all original panels remain)
+     PANELS
 ===================================== -->
-<div class="panel" id="lettersPanel">...</div>
-<div class="panel" id="songsPanel">...</div>
-<div class="panel" id="hairPanel">...</div>
-<div class="panel" id="galleryPanel">...</div>
-<div class="panel" id="quotesPanel">...</div>
-<div class="panel" id="eventsPanel">...</div>
-<div class="panel" id="dreamsPanel">...</div>
-<div class="panel" id="timelinePanel">...</div>
-<div class="panel" id="secretPanel">...</div>
-<div class="panel" id="settingsPanel">...</div>
-<div class="panel" id="gamePanel">...</div>
-<div class="panel" id="voicePanel">...</div>
-<div class="panel" id="mapPanel">...</div>
 
+<!-- LOVE LETTERS -->
+<div class="panel" id="lettersPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">💌 Love <span>Letters</span></div>
+      <button class="panel-close" onclick="closePanel('lettersPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="letter-compose">
+        <textarea id="letterInput" placeholder="Write your love letter here..."></textarea>
+        <div class="flex-row" style="justify-content:flex-end;margin-top:0.5rem">
+          <button class="btn btn-primary" onclick="saveLetter()">Send Letter 💌</button>
+        </div>
+      </div>
+      <div id="lettersList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SONGS -->
+<div class="panel" id="songsPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🎵 <span>Favorite</span> Songs</div>
+      <button class="panel-close" onclick="closePanel('songsPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <label class="upload-btn" for="songUpload">
+        ➕ Upload a Song (MP3)
+      </label>
+      <input type="file" id="songUpload" accept="audio/*" onchange="uploadSong(this)">
+      <canvas id="visualizerCanvas" height="60"></canvas>
+      <div id="songsList" class="mt-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HAIR COLORS -->
+<div class="panel" id="hairPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">💇 Hair <span>Colors</span></div>
+      <button class="panel-close" onclick="closePanel('hairPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="hair-preview">
+        <div class="hair-face">👩</div>
+        <div class="hair-overlay" id="hairOverlay" style="background:#3d2314"></div>
+      </div>
+      <div class="color-swatch-grid" id="hairSwatches"></div>
+      <div class="flex-row" style="justify-content:center;margin-bottom:1rem">
+        <input type="color" id="customHairColor" value="#3d2314"
+          oninput="setHairColor(this.value)"
+          style="width:48px;height:48px;border:none;border-radius:50%;cursor:pointer;background:none">
+        <span style="color:var(--text-muted);font-size:0.9rem">Custom color</span>
+      </div>
+      <input type="text" id="styleName" placeholder="Style name (e.g. 'Summer Caramel')">
+      <button class="btn btn-primary" onclick="saveHairStyle()" style="width:100%">💾 Save Style</button>
+      <div class="mt-2">
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.8rem">Saved Styles</div>
+        <div class="saved-styles" id="savedStylesList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="panel" id="galleryPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">📸 Memory <span>Gallery</span></div>
+      <button class="panel-close" onclick="closePanel('galleryPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <label class="upload-btn" for="photoUpload">
+        📷 Add a Memory Photo
+      </label>
+      <input type="file" id="photoUpload" accept="image/*" multiple onchange="uploadPhotos(this)">
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTES -->
+<div class="panel" id="quotesPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🌺 Love <span>Quotes</span></div>
+      <button class="panel-close" onclick="closePanel('quotesPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div id="quotesList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTS PLANNER -->
+<div class="panel" id="eventsPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🌙 <span>Events</span> Planner</div>
+      <button class="panel-close" onclick="closePanel('eventsPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div id="eventsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DREAMS & GOALS -->
+<div class="panel" id="dreamsPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">✨ Dreams & <span>Goals</span></div>
+      <button class="panel-close" onclick="closePanel('dreamsPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="flex-row" style="margin-bottom:1rem">
+        <input type="text" id="dreamInput" placeholder="Add a dream or goal..." style="margin-bottom:0">
+        <button class="btn btn-primary" onclick="addDream()">Add</button>
+      </div>
+      <div id="dreamsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="panel" id="timelinePanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">📜 Our <span>Story</span></div>
+      <button class="panel-close" onclick="closePanel('timelinePanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="timeline" id="timelineList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECRET HEART -->
+<div class="panel" id="secretPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🔐 <span>Secret</span> Heart</div>
+      <button class="panel-close" onclick="closePanel('secretPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="secret-heart-area">
+        <div class="big-heart" onclick="clickBigHeart(event)">❤️</div>
+        <div style="color:var(--text-soft);font-size:0.9rem;margin:0.5rem 0" id="secretClickCount">0 / 20 clicks</div>
+        <div class="secret-progress">
+          <div class="secret-fill" id="secretFill" style="width:0%"></div>
+        </div>
+        <div class="secret-hint" id="secretHint">Keep clicking the heart... 💭</div>
+      </div>
+      <div class="secret-unlocked" id="secretMessage">
+        <div style="font-size:2rem;margin-bottom:1rem">💝</div>
+        <div class="secret-msg" id="secretMsgText"></div>
+        <button class="btn btn-primary mt-2" onclick="triggerConfetti()">🎉 Celebrate!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="panel" id="settingsPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">⚙️ <span>Settings</span></div>
+      <button class="panel-close" onclick="closePanel('settingsPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="settings-section">
+        <div class="settings-label">🎨 Appearance</div>
+        <div class="settings-row">
+          <label>Dark / Light Mode</label>
+          <label class="toggle">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <label>Theme Color</label>
+          <div class="theme-colors" id="themeColors"></div>
+        </div>
+        <div class="settings-row">
+          <label>Particles</label>
+          <label class="toggle">
+            <input type="checkbox" id="particleToggle" checked onchange="toggleParticles(this)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-label">🔊 Audio</div>
+        <div class="settings-row">
+          <label>Background Music</label>
+          <label class="toggle">
+            <input type="checkbox" id="bgMusicToggle" onchange="toggleBgMusic()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <label>Volume</label>
+          <input type="range" class="range-input" id="volumeSlider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-label">🔐 Security</div>
+        <div class="settings-row">
+          <label>Change PIN</label>
+          <button class="btn" onclick="changePIN()">Change</button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-label">💾 Data</div>
+        <div class="settings-row">
+          <label>Reset All Data</label>
+          <button class="btn" style="border-color:#ff6b6b;color:#ff6b6b" onclick="resetData()">Reset</button>
+        </div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:1rem;font-style:italic">
+        Made with ❤️ for Imane Chichi
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MINI GAME -->
+<div class="panel" id="gamePanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🎮 <span>Love</span> Game</div>
+      <button class="panel-close" onclick="closePanel('gamePanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="game-area">
+        <div class="game-score" id="gameScore">0</div>
+        <div class="game-info">Click / tap the falling hearts! <span id="gameTimer" style="color:var(--gold)">30s</span></div>
+        <canvas id="gameCanvas" onclick="gameClick(event)"></canvas>
+        <div class="flex-row" style="justify-content:center;margin-top:1rem">
+          <button class="btn btn-primary" onclick="startGame()">Start Game ♡</button>
+        </div>
+        <div id="gameHighScore" style="text-align:center;color:var(--accent);font-size:0.85rem;margin-top:0.5rem"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VOICE MESSAGES -->
+<div class="panel" id="voicePanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🎤 Voice <span>Messages</span></div>
+      <button class="panel-close" onclick="closePanel('voicePanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="text-center">
+        <div style="color:var(--text-soft);font-style:italic;margin-bottom:1rem">Record a voice message for Imane</div>
+        <button class="recorder-btn" id="recordBtn" onclick="toggleRecording()">🎤</button>
+        <div id="recordStatus" style="color:var(--text-muted);font-size:0.85rem">Tap to start recording</div>
+      </div>
+      <div id="voiceRecordings" class="mt-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LOVE MAP -->
+<div class="panel" id="mapPanel">
+  <div class="panel-inner">
+    <div class="panel-header">
+      <div class="panel-title">🗺️ Love <span>Map</span></div>
+      <button class="panel-close" onclick="closePanel('mapPanel')">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="flex-row" style="margin-bottom:0.5rem">
+        <input type="text" id="mapPlace" placeholder="Place name..." style="margin-bottom:0">
+        <input type="text" id="mapMemory" placeholder="Memory..." style="margin-bottom:0">
+      </div>
+      <button class="btn btn-primary" onclick="addMapNote()" style="width:100%;margin-bottom:1rem">📍 Add Place</button>
+      <div id="mapNotesList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ JAVASCRIPT ============ -->
 <script>
-  // Your original full JavaScript code (unchanged) goes here.
-  // Since it's lengthy, I'm placing a placeholder, but the final file includes every function exactly as you had.
+/* =============================================
+   CONSTANTS & DATA
+============================================= */
+const BIRTH_DATE = new Date('2003-04-17');
+const FIRST_MEETING = new Date('2024-07-09');
+const HEART_GOAL = 50;
+const SECRET_CLICKS = 20;
+const DEFAULT_PIN = '0417';
+
+const LOVE_QUOTES = [
+  { text: "Every love story is beautiful, but ours is my favorite.", author: "— Unknown" },
+  { text: "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.", author: "— Maya Angelou" },
+  { text: "You are my today and all of my tomorrows.", author: "— Leo Christopher" },
+  { text: "I love you not only for what you are, but for what I am when I am with you.", author: "— Elizabeth Barrett Browning" },
+  { text: "Whatever our souls are made of, his and mine are the same.", author: "— Emily Brontë" },
+  { text: "I fell in love the way you fall asleep: slowly, and then all at once.", author: "— John Green" },
+  { text: "You make me want to be a better person.", author: "— As Good as It Gets" },
+  { text: "I would rather spend one lifetime with you than face all the ages of this world alone.", author: "— J.R.R. Tolkien" },
+  { text: "The best thing to hold onto in life is each other.", author: "— Audrey Hepburn" },
+  { text: "You are my sun, my moon, and all my stars.", author: "— E.E. Cummings" },
+  { text: "I am nothing special, of this I am sure. But in one regard I have succeeded as gloriously as anyone who ever lived: I have loved another with all my heart.", author: "— Nicholas Sparks" },
+  { text: "When I saw you I fell in love, and you smiled because you knew.", author: "— Arrigo Boito" },
+  { text: "Two souls, one heart.", author: "— François Villon" },
+  { text: "Love is not about how many days, months, or years you have been together. It's all about how much you love each other every single day.", author: "— Unknown" },
+];
+
+const DAILY_MESSAGES = [
+  "Every morning I wake up grateful that you exist in my world. 🌸",
+  "Your smile is the most beautiful thing I've ever seen. 💖",
+  "Being with you feels like coming home. 🏡",
+  "You make ordinary moments extraordinary. ✨",
+  "I love the way your eyes light up when you talk about things you love. 👀",
+  "You are the poem I never knew how to write. 📝",
+  "Every day with you is a new adventure. 🌿",
+  "You are my favorite notification. 💌",
+  "In a world full of people, my eyes will always search for you. 🔍",
+  "Thank you for being exactly who you are. 💝",
+];
+
+const TIMELINE_EVENTS = [
+  { date: '2024-07-09', title: 'First Meeting 💫', desc: 'The day our story began. The universe conspired to bring us together, and nothing was ever the same again.' },
+  { date: '2024-08-01', title: 'First Real Conversation 💬', desc: 'We talked for hours and forgot about time. I knew then you were someone special.' },
+  { date: '2024-09-15', title: 'First Memories Together 📸', desc: 'Creating moments I\'ll treasure forever. Every photo a frozen piece of happiness.' },
+  { date: '2024-10-20', title: 'I Knew It Was Love 💕', desc: 'That quiet realization that came slowly, then all at once. You had already found a place in my heart.' },
+  { date: '2024-12-25', title: 'Winter Magic ❄️', desc: 'Cold outside, warm inside. Every winter will forever remind me of you.' },
+  { date: '2025-04-17', title: 'Your Birthday 🎂', desc: 'Celebrating the day the world became more beautiful because you entered it.' },
+  { date: '2025-07-09', title: 'Our First Anniversary 🌹', desc: 'One full year of you. Three hundred and sixty-five days of choosing each other.' },
+];
+
+const HAIR_COLORS = [
+  { color: '#1a0800', name: 'Jet Black' },
+  { color: '#3d2314', name: 'Dark Brown' },
+  { color: '#7b4a2d', name: 'Chestnut' },
+  { color: '#c4823e', name: 'Caramel' },
+  { color: '#d4a86a', name: 'Golden Blonde' },
+  { color: '#e8c89a', name: 'Platinum' },
+  { color: '#8b1a1a', name: 'Auburn Red' },
+  { color: '#cc4455', name: 'Rose Red' },
+  { color: '#e87070', name: 'Copper Rose' },
+  { color: '#9b2c7e', name: 'Violet' },
+  { color: '#4a5cb8', name: 'Ocean Blue' },
+  { color: '#2d8a5e', name: 'Emerald' },
+];
+
+const THEME_COLORS = [
+  { name: 'Rose', primary: '#e8a4b8', dark: '#c97a9a', accent: '#a78bca' },
+  { name: 'Gold', primary: '#d4a064', dark: '#b88040', accent: '#e8c878' },
+  { name: 'Lavender', primary: '#c4b0e8', dark: '#9a80c4', accent: '#e8a4d0' },
+  { name: 'Mint', primary: '#80c4a8', dark: '#50a080', accent: '#a8d8c0' },
+  { name: 'Sunset', primary: '#e89060', dark: '#c46040', accent: '#e8b878' },
+];
+
+/* =============================================
+   STATE
+============================================= */
+let state = {
+  pin: DEFAULT_PIN,
+  pinEntry: '',
+  heartCount: 0,
+  secretClicks: 0,
+  secretUnlocked: false,
+  particlesOn: true,
+  bgMusicOn: false,
+  volume: 50,
+  theme: 'dark',
+  themeColorIdx: 0,
+  currentSongIdx: -1,
+  isPlaying: false,
+  songs: [], // {name, dataUrl, isFav}
+  letters: [], // {id, text, date}
+  photos: [], // {id, dataUrl}
+  hairStyles: [], // {name, color}
+  currentHairColor: '#3d2314',
+  dreams: [], // {id, text, done}
+  voiceRecordings: [], // {id, name, dataUrl}
+  mapNotes: [], // {id, place, memory}
+  gameScore: 0,
+  gameHighScore: 0,
+  gameActive: false,
+};
+
+// Load from localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('imaneApp');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(state, parsed);
+      // Re-init non-serializable
+      state.pinEntry = '';
+      state.isPlaying = false;
+      state.gameActive = false;
+    }
+  } catch(e) { console.warn('State load error', e); }
+}
+
+function saveState() {
+  try {
+    const toSave = { ...state };
+    delete toSave.pinEntry;
+    localStorage.setItem('imaneApp', JSON.stringify(toSave));
+  } catch(e) {
+    // IndexedDB fallback or silent fail for large data
+    console.warn('Storage full, trying to save without media');
+  }
+}
+
+/* =============================================
+   PIN SYSTEM
+============================================= */
+function pinInput(val) {
+  if (val === 'del') {
+    state.pinEntry = state.pinEntry.slice(0, -1);
+  } else if (val === 'ok') {
+    checkPin();
+    return;
+  } else {
+    if (state.pinEntry.length >= 4) return;
+    state.pinEntry += val;
+    if (state.pinEntry.length === 4) {
+      setTimeout(checkPin, 200);
+    }
+  }
+  updatePinDots();
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('dot' + i).classList.toggle('filled', i < state.pinEntry.length);
+  }
+}
+
+function checkPin() {
+  if (state.pinEntry === state.pin) {
+    document.getElementById('pinScreen').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('pinScreen').style.display = 'none';
+      document.getElementById('heroScreen').style.display = 'flex';
+    }, 600);
+  } else {
+    document.getElementById('pinError').textContent = '✗ Incorrect PIN. Try again.';
+    document.getElementById('pinError').style.animation = 'none';
+    void document.getElementById('pinError').offsetWidth;
+    document.getElementById('pinError').style.animation = 'shake 0.4s ease';
+    state.pinEntry = '';
+    updatePinDots();
+    setTimeout(() => { document.getElementById('pinError').textContent = ''; }, 2000);
+  }
+}
+
+/* =============================================
+   HERO & APP START
+============================================= */
+function initHero() {
+  const days = Math.floor((Date.now() - FIRST_MEETING) / (1000 * 60 * 60 * 24));
+  document.getElementById('dayCount').textContent = days.toLocaleString();
+}
+
+function startApp() {
+  document.getElementById('heroScreen').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('heroScreen').style.display = 'none';
+    document.getElementById('mainApp').classList.add('visible');
+    initMainApp();
+  }, 800);
+}
+
+function initMainApp() {
+  renderDailyMessage();
+  updateHeartBar();
+  renderGallery();
+  renderLetters();
+  renderSongs();
+  renderHairSwatches();
+  renderSavedStyles();
+  renderQuotes();
+  renderEvents();
+  renderDreams();
+  renderTimeline();
+  renderMapNotes();
+  renderVoiceRecordings();
+  updateGameHighScore();
+  applyTheme();
+}
+
+/* =============================================
+   PARTICLES SYSTEM
+============================================= */
+const pCanvas = document.getElementById('particleCanvas');
+const pCtx = pCanvas.getContext('2d');
+let particles = [];
+let animFrame;
+
+function resizeCanvas() {
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+
+function createParticle() {
+  return {
+    x: Math.random() * pCanvas.width,
+    y: pCanvas.height + 20,
+    size: Math.random() * 16 + 8,
+    speedY: -(Math.random() * 1.5 + 0.5),
+    speedX: (Math.random() - 0.5) * 0.8,
+    opacity: Math.random() * 0.6 + 0.2,
+    char: Math.random() < 0.6 ? '♡' : (Math.random() < 0.5 ? '✦' : '·'),
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: Math.random() * 0.04 + 0.01,
+  };
+}
+
+function animateParticles() {
+  if (!state.particlesOn) {
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    animFrame = requestAnimationFrame(animateParticles);
+    return;
+  }
+
+  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+
+  if (particles.length < 25 && Math.random() < 0.08) {
+    particles.push(createParticle());
+  }
+
+  particles = particles.filter(p => p.y > -50 && p.opacity > 0);
+
+  for (const p of particles) {
+    p.y += p.speedY;
+    p.wobble += p.wobbleSpeed;
+    p.x += p.speedX + Math.sin(p.wobble) * 0.5;
+    p.opacity -= 0.001;
+
+    pCtx.save();
+    pCtx.globalAlpha = p.opacity;
+    pCtx.fillStyle = p.char === '♡' ? '#e8a4b8' : '#d4a064';
+    pCtx.font = `${p.size}px serif`;
+    pCtx.fillText(p.char, p.x, p.y);
+    pCtx.restore();
+  }
+
+  animFrame = requestAnimationFrame(animateParticles);
+}
+
+// Click hearts
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.panel') || e.target.closest('#pinScreen') || e.target.closest('#heroScreen')) return;
+  spawnFloatHeart(e.clientX, e.clientY);
+  state.heartCount++;
+  updateHeartBar();
+  if (state.heartCount % 10 === 0) saveState();
+});
+
+function spawnFloatHeart(x, y) {
+  const el = document.createElement('div');
+  el.className = 'float-heart';
+  el.textContent = ['❤️','💕','💖','💗','💝'][Math.floor(Math.random()*5)];
+  el.style.left = (x - 12) + 'px';
+  el.style.top = (y - 12) + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
+}
+
+function updateHeartBar() {
+  document.getElementById('heartCountDisplay').textContent = state.heartCount;
+  const pct = Math.min(100, (state.heartCount / HEART_GOAL) * 100);
+  document.getElementById('heartBarProgress').style.width = pct + '%';
+  if (state.heartCount >= HEART_GOAL && !state._heartMilestone) {
+    state._heartMilestone = true;
+    triggerConfetti();
+  }
+}
+
+/* =============================================
+   SCROLL PROGRESS
+============================================= */
+window.addEventListener('scroll', () => {
+  const winH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (window.scrollY / winH) * 100;
+  document.getElementById('scrollProgress').style.width = pct + '%';
+});
+
+/* =============================================
+   DAILY MESSAGE
+============================================= */
+function renderDailyMessage() {
+  const day = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+  const msg = DAILY_MESSAGES[day % DAILY_MESSAGES.length];
+  document.getElementById('dailyMsg').textContent = msg;
+}
+
+/* =============================================
+   PANEL MANAGEMENT
+============================================= */
+function openPanel(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Panel-specific init
+  if (id === 'timelinePanel') revealTimeline();
+  if (id === 'eventsPanel') renderEvents();
+  if (id === 'secretPanel') updateSecretUI();
+  if (id === 'gamePanel') initGameCanvas();
+}
+
+function closePanel(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click
+document.querySelectorAll('.panel').forEach(panel => {
+  panel.addEventListener('click', (e) => {
+    if (e.target === panel) closePanel(panel.id);
+  });
+});
+
+/* =============================================
+   FRUIT TREE
+============================================= */
+function fruitClick(btn, panelId) {
+  btn.classList.add('falling');
+  setTimeout(() => {
+    btn.classList.remove('falling');
+    openPanel(panelId);
+  }, 600);
+}
+
+/* =============================================
+   LOVE LETTERS
+============================================= */
+function saveLetter() {
+  const txt = document.getElementById('letterInput').value.trim();
+  if (!txt) return;
+
+  state.letters.unshift({
+    id: Date.now(),
+    text: txt,
+    date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })
+  });
+
+  document.getElementById('letterInput').value = '';
+  renderLetters();
+  saveState();
+  spawnFloatHeart(window.innerWidth/2, window.innerHeight/2);
+}
+
+function deleteLetter(id) {
+  state.letters = state.letters.filter(l => l.id !== id);
+  renderLetters();
+  saveState();
+}
+
+function renderLetters() {
+  const container = document.getElementById('lettersList');
+  if (!state.letters.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">💌</div>No letters yet. Write your first one!</div>`;
+    return;
+  }
+  container.innerHTML = state.letters.map(l => `
+    <div class="letter-card">
+      <div class="letter-date">${l.date}</div>
+      <div class="letter-text">"${l.text}"</div>
+      <button class="letter-delete" onclick="deleteLetter(${l.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+/* =============================================
+   SONGS & AUDIO
+============================================= */
+let audioCtx = null;
+let analyser = null;
+let audioSource = null;
+let audioEl = null;
+let vizAnimId = null;
+let bgMusicAudio = null;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 64;
+  analyser.connect(audioCtx.destination);
+}
+
+function uploadSong(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      state.songs.push({
+        id: Date.now() + Math.random(),
+        name: file.name.replace(/\.[^.]+$/, ''),
+        dataUrl: e.target.result,
+        isFav: false,
+      });
+      renderSongs();
+      saveState();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderSongs() {
+  const container = document.getElementById('songsList');
+  if (!state.songs.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎵</div>Upload your favorite songs!</div>`;
+    return;
+  }
+  container.innerHTML = state.songs.map((s, i) => `
+    <div class="song-card ${state.currentSongIdx === i ? 'active' : ''}" onclick="playSong(${i})">
+      <div class="song-art ${state.currentSongIdx === i && state.isPlaying ? 'spinning' : ''}">🎵</div>
+      <div class="song-info">
+        <div class="song-name">${s.name}</div>
+        <div class="song-meta">${state.currentSongIdx === i && state.isPlaying ? '▶ Now Playing' : 'Tap to play'}</div>
+      </div>
+      <span class="song-fav ${s.isFav ? 'active' : ''}" onclick="toggleFav(event,${i})">♥</span>
+    </div>
+  `).join('');
+}
+
+function playSong(idx) {
+  if (!audioEl) {
+    audioEl = new Audio();
+    audioEl.onended = nextSong;
+  }
+
+  initAudio();
+
+  if (audioSource) { try { audioSource.disconnect(); } catch(e){} }
+
+  state.currentSongIdx = idx;
+  const song = state.songs[idx];
+  audioEl.src = song.dataUrl;
+
+  audioSource = audioCtx.createMediaElementSource(audioEl);
+  audioSource.connect(analyser);
+
+  audioEl.volume = state.volume / 100;
+  audioEl.play().catch(e => console.log(e));
+  state.isPlaying = true;
+
+  renderSongs();
+  updateMiniPlayer();
+  startVisualizer();
+}
+
+function togglePlay() {
+  if (!audioEl || state.currentSongIdx < 0) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  if (state.isPlaying) {
+    audioEl.pause();
+    state.isPlaying = false;
+    document.getElementById('playPauseBtn').textContent = '▶';
+    document.getElementById('playerArt').classList.remove('spinning');
+  } else {
+    audioEl.play();
+    state.isPlaying = true;
+    document.getElementById('playPauseBtn').textContent = '⏸';
+    document.getElementById('playerArt').classList.add('spinning');
+  }
+  renderSongs();
+}
+
+function nextSong() {
+  if (state.songs.length === 0) return;
+  playSong((state.currentSongIdx + 1) % state.songs.length);
+}
+
+function prevSong() {
+  if (state.songs.length === 0) return;
+  playSong((state.currentSongIdx - 1 + state.songs.length) % state.songs.length);
+}
+
+function toggleFav(e, idx) {
+  e.stopPropagation();
+  state.songs[idx].isFav = !state.songs[idx].isFav;
+  renderSongs();
+  saveState();
+}
+
+function updateMiniPlayer() {
+  const player = document.getElementById('miniPlayer');
+  if (state.currentSongIdx < 0 || !state.songs.length) {
+    player.classList.add('hidden');
+    return;
+  }
+  player.classList.remove('hidden');
+  document.getElementById('playerName').textContent = state.songs[state.currentSongIdx]?.name || '—';
+  document.getElementById('playPauseBtn').textContent = state.isPlaying ? '⏸' : '▶';
+  if (state.isPlaying) {
+    document.getElementById('playerArt').classList.add('spinning');
+  } else {
+    document.getElementById('playerArt').classList.remove('spinning');
+  }
+}
+
+function startVisualizer() {
+  const canvas = document.getElementById('visualizerCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = 120;
+
+  if (vizAnimId) cancelAnimationFrame(vizAnimId);
+
+  function draw() {
+    if (!analyser) { vizAnimId = requestAnimationFrame(draw); return; }
+    const bufferLen = analyser.frequencyBinCount;
+    const data = new Uint8Array(bufferLen);
+    analyser.getByteFrequencyData(data);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barW = (canvas.width / bufferLen) * 2;
+    let x = 0;
+    for (let i = 0; i < bufferLen; i++) {
+      const barH = (data[i] / 255) * canvas.height;
+      const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barH);
+      grad.addColorStop(0, '#e8a4b8');
+      grad.addColorStop(1, '#a78bca');
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, canvas.height - barH, barW - 1, barH);
+      x += barW;
+    }
+
+    vizAnimId = requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function toggleBgMusic() {
+  state.bgMusicOn = !state.bgMusicOn;
+  document.getElementById('bgMusicBtn').textContent = state.bgMusicOn ? '🔇' : '🎵';
+  const toggle = document.getElementById('bgMusicToggle');
+  if (toggle) toggle.checked = state.bgMusicOn;
+  // In a real app, this would play a default background track
+  // For now we show a notification
+  if (state.bgMusicOn) {
+    showToast('🎵 Background music enabled');
+  } else {
+    showToast('🔇 Background music paused');
+  }
+}
+
+function setVolume(val) {
+  state.volume = parseInt(val);
+  if (audioEl) audioEl.volume = state.volume / 100;
+  saveState();
+}
+
+/* =============================================
+   HAIR COLORS
+============================================= */
+function renderHairSwatches() {
+  const container = document.getElementById('hairSwatches');
+  container.innerHTML = HAIR_COLORS.map(c => `
+    <div class="color-swatch ${state.currentHairColor === c.color ? 'active' : ''}"
+      style="background:${c.color}"
+      onclick="setHairColor('${c.color}')"
+      title="${c.name}">
+    </div>
+  `).join('');
+}
+
+function setHairColor(color) {
+  state.currentHairColor = color;
+  document.getElementById('hairOverlay').style.background = color;
+  document.getElementById('customHairColor').value = color;
+  renderHairSwatches();
+}
+
+function saveHairStyle() {
+  const name = document.getElementById('styleName').value.trim() || 'My Style';
+  state.hairStyles.unshift({ name, color: state.currentHairColor });
+  document.getElementById('styleName').value = '';
+  renderSavedStyles();
+  saveState();
+  showToast('💇 Style saved!');
+}
+
+function renderSavedStyles() {
+  const container = document.getElementById('savedStylesList');
+  if (!state.hairStyles.length) {
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;font-style:italic">No saved styles yet</div>';
+    return;
+  }
+  container.innerHTML = state.hairStyles.slice(0, 6).map(s => `
+    <div class="saved-style" onclick="setHairColor('${s.color}')">
+      <div class="saved-style-dot" style="background:${s.color}"></div>
+      <div class="saved-style-name">${s.name}</div>
+    </div>
+  `).join('');
+}
+
+/* =============================================
+   GALLERY
+============================================= */
+function uploadPhotos(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      state.photos.unshift({ id: Date.now() + Math.random(), dataUrl: e.target.result });
+      renderGallery();
+      saveState();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderGallery() {
+  const container = document.getElementById('galleryGrid');
+  if (!state.photos.length) {
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📸</div>Add your first memory!</div>`;
+    return;
+  }
+  container.innerHTML = state.photos.map(p => `
+    <div class="gallery-item" onclick="openLightbox('${p.dataUrl}')">
+      <img src="${p.dataUrl}" alt="memory" loading="lazy">
+      <button class="gallery-delete" onclick="deletePhoto(event,'${p.id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function deletePhoto(e, id) {
+  e.stopPropagation();
+  state.photos = state.photos.filter(p => String(p.id) !== String(id));
+  renderGallery();
+  saveState();
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+/* =============================================
+   LOVE QUOTES
+============================================= */
+function renderQuotes() {
+  const container = document.getElementById('quotesList');
+  container.innerHTML = LOVE_QUOTES.map((q, i) => `
+    <div class="quote-card" style="animation-delay:${i*0.1}s">
+      <div class="quote-text">"${q.text}"</div>
+      <div class="quote-author">${q.author}</div>
+    </div>
+  `).join('');
+}
+
+/* =============================================
+   EVENTS PLANNER
+============================================= */
+function getNextDate(month, day) {
+  const now = new Date();
+  let d = new Date(now.getFullYear(), month - 1, day);
+  if (d < now) d.setFullYear(d.getFullYear() + 1);
+  return d;
+}
+
+function getCountdown(targetDate) {
+  const diff = targetDate - Date.now();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  const s = Math.floor(diff / 1000);
+  return {
+    days: Math.floor(s / 86400),
+    hours: Math.floor((s % 86400) / 3600),
+    minutes: Math.floor((s % 3600) / 60),
+    seconds: s % 60,
+  };
+}
+
+const EVENTS_DATA = [
+  {
+    name: 'Eid Al Fitr 🌙',
+    getDate: () => {
+      // Approximate Eid Al Fitr dates
+      const eidDates2026 = new Date('2026-03-20');
+      return eidDates2026 < new Date() ? new Date('2027-03-09') : eidDates2026;
+    },
+    msg: 'A blessed celebration of faith and gratitude. May this Eid bring joy to your heart and warmth to your home. Eid Mubarak, my love! 🌙✨',
+  },
+  {
+    name: 'Eid Al Adha 🐑',
+    getDate: () => {
+      const eid = new Date('2026-05-27');
+      return eid < new Date() ? new Date('2027-05-17') : eid;
+    },
+    msg: 'A time of sacrifice, gratitude, and togetherness. May this blessed day be filled with love and happiness. Eid Mubarak! 🌿',
+  },
+  {
+    name: 'Our Anniversary 🌹',
+    getDate: () => getNextDate(7, 9), // July 9
+    msg: 'The day our story began. Every year on this day, I fall in love with you all over again. Happy Anniversary, my heart! 💕',
+  },
+  {
+    name: "Imane's Birthday 🎂",
+    getDate: () => getNextDate(4, 17), // April 17
+    msg: "Happy Birthday to the most wonderful person in my world! On the day you were born, the stars aligned to create something extraordinary — you! 🎂✨",
+  },
+];
+
+function renderEvents() {
+  const container = document.getElementById('eventsList');
+  container.innerHTML = EVENTS_DATA.map(ev => {
+    const targetDate = ev.getDate();
+    const cd = getCountdown(targetDate);
+    return `
+      <div class="event-card">
+        <div class="event-name">${ev.name}</div>
+        <div class="event-date">${targetDate.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}</div>
+        <div class="countdown-grid">
+          <div class="countdown-item"><span class="countdown-num">${cd.days}</span><span class="countdown-label">Days</span></div>
+          <div class="countdown-item"><span class="countdown-num">${cd.hours}</span><span class="countdown-label">Hours</span></div>
+          <div class="countdown-item"><span class="countdown-num">${cd.minutes}</span><span class="countdown-label">Mins</span></div>
+          <div class="countdown-item"><span class="countdown-num">${cd.seconds}</span><span class="countdown-label">Secs</span></div>
+        </div>
+        <div class="event-msg">"${ev.msg}"</div>
+      </div>
+    `;
+  }).join('');
+
+  // Live update countdowns
+  if (document.getElementById('eventsPanel').classList.contains('open')) {
+    setTimeout(renderEvents, 1000);
+  }
+}
+
+/* =============================================
+   DREAMS & GOALS
+============================================= */
+const DEFAULT_DREAMS = [
+  { id: 1, text: 'Travel to Paris together 🗼', done: false },
+  { id: 2, text: 'Watch a sunset on the beach 🌅', done: false },
+  { id: 3, text: 'Cook a romantic dinner for two 🍽️', done: false },
+  { id: 4, text: 'Dance in the rain together ☔', done: false },
+  { id: 5, text: 'Write a love song 🎵', done: false },
+];
+
+function addDream() {
+  const txt = document.getElementById('dreamInput').value.trim();
+  if (!txt) return;
+  state.dreams.push({ id: Date.now(), text: txt, done: false });
+  document.getElementById('dreamInput').value = '';
+  renderDreams();
+  saveState();
+}
+
+function toggleDream(id) {
+  const d = state.dreams.find(d => d.id === id);
+  if (d) { d.done = !d.done; if (d.done) triggerMiniConfetti(); }
+  renderDreams();
+  saveState();
+}
+
+function deleteDream(id) {
+  state.dreams = state.dreams.filter(d => d.id !== id);
+  renderDreams();
+  saveState();
+}
+
+function renderDreams() {
+  const container = document.getElementById('dreamsList');
+  const dreams = state.dreams.length ? state.dreams : DEFAULT_DREAMS;
+  container.innerHTML = dreams.map(d => `
+    <div class="dream-item">
+      <div class="dream-check ${d.done ? 'done' : ''}" onclick="toggleDream(${d.id})">
+        ${d.done ? '✓' : ''}
+      </div>
+      <div class="dream-text ${d.done ? 'done' : ''}">${d.text}</div>
+      <button class="dream-delete" onclick="deleteDream(${d.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+/* =============================================
+   TIMELINE
+============================================= */
+function renderTimeline() {
+  const container = document.getElementById('timelineList');
+  container.innerHTML = TIMELINE_EVENTS.map((ev, i) => `
+    <div class="timeline-item" data-idx="${i}">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">${new Date(ev.date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}</div>
+      <div class="timeline-title">${ev.title}</div>
+      <div class="timeline-desc">${ev.desc}</div>
+    </div>
+  `).join('');
+}
+
+function revealTimeline() {
+  const items = document.querySelectorAll('.timeline-item');
+  items.forEach((item, i) => {
+    setTimeout(() => item.classList.add('revealed'), i * 200);
+  });
+}
+
+/* =============================================
+   SECRET HEART
+============================================= */
+const SECRET_MESSAGES = [
+  "You are the poem written in the stars just for me. Every heartbeat of mine knows your name. Every dream I've ever dreamed, you were already there, waiting. I love you more than all the words in every language ever spoken. You are my greatest adventure, my deepest peace, my forever love. 💝",
+];
+
+function clickBigHeart(e) {
+  spawnFloatHeart(e.clientX, e.clientY);
+  state.secretClicks++;
+  updateSecretUI();
+
+  if (state.secretClicks >= SECRET_CLICKS && !state.secretUnlocked) {
+    state.secretUnlocked = true;
+    unlockSecret();
+  }
+  saveState();
+}
+
+function updateSecretUI() {
+  const pct = Math.min(100, (state.secretClicks / SECRET_CLICKS) * 100);
+  document.getElementById('secretFill').style.width = pct + '%';
+  document.getElementById('secretClickCount').textContent = `${Math.min(state.secretClicks, SECRET_CLICKS)} / ${SECRET_CLICKS} clicks`;
+
+  if (state.secretClicks < SECRET_CLICKS) {
+    const left = SECRET_CLICKS - state.secretClicks;
+    document.getElementById('secretHint').textContent =
+      left > 15 ? 'Keep clicking the heart... 💭' :
+      left > 8 ? 'Something is unlocking... 💫' :
+      left > 3 ? 'Almost there... ✨' : 'One more moment... 💕';
+  }
+
+  if (state.secretUnlocked) {
+    document.getElementById('secretMessage').classList.add('show');
+    document.getElementById('secretMsgText').textContent = SECRET_MESSAGES[0];
+    document.getElementById('secretHint').textContent = '✨ Secret unlocked!';
+  }
+}
+
+function unlockSecret() {
+  triggerConfetti();
+  showToast('💝 Secret message unlocked!');
+}
+
+/* =============================================
+   SETTINGS
+============================================= */
+function renderThemeColors() {
+  const container = document.getElementById('themeColors');
+  container.innerHTML = THEME_COLORS.map((c, i) => `
+    <div class="theme-color-btn ${state.themeColorIdx === i ? 'active' : ''}"
+      style="background:${c.primary}"
+      onclick="setThemeColor(${i})"
+      title="${c.name}">
+    </div>
+  `).join('');
+}
+
+function setThemeColor(idx) {
+  state.themeColorIdx = idx;
+  applyTheme();
+  renderThemeColors();
+  saveState();
+}
+
+function applyTheme() {
+  const c = THEME_COLORS[state.themeColorIdx] || THEME_COLORS[0];
+  document.documentElement.style.setProperty('--primary', c.primary);
+  document.documentElement.style.setProperty('--primary-dark', c.dark);
+  document.documentElement.style.setProperty('--accent2', c.accent);
+  document.documentElement.style.setProperty('--glow-pink', hexToRgba(c.primary, 0.25));
+
+  if (state.theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+
+  renderThemeColors();
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function toggleTheme(input) {
+  state.theme = input.checked ? 'light' : 'dark';
+  applyTheme();
+  saveState();
+}
+
+function toggleParticles(input) {
+  state.particlesOn = input.checked;
+  saveState();
+}
+
+function changePIN() {
+  const newPin = prompt('Enter new 4-digit PIN:');
+  if (newPin && /^\d{4}$/.test(newPin)) {
+    state.pin = newPin;
+    saveState();
+    showToast('🔐 PIN updated!');
+  } else if (newPin) {
+    showToast('❌ PIN must be 4 digits');
+  }
+}
+
+function resetData() {
+  if (!confirm('Reset ALL data? This cannot be undone.')) return;
+  localStorage.removeItem('imaneApp');
+  location.reload();
+}
+
+/* =============================================
+   MINI GAME
+============================================= */
+let gameCtx, gameW, gameH;
+let gameHearts = [];
+let gameIntervalId, gameCountdownId;
+let gameTimeLeft = 30;
+
+function initGameCanvas() {
+  const canvas = document.getElementById('gameCanvas');
+  gameCtx = canvas.getContext('2d');
+  gameW = canvas.width = canvas.offsetWidth;
+  gameH = canvas.height = 300;
+  gameCtx.fillStyle = 'rgba(13,5,24,0.8)';
+  gameCtx.fillRect(0, 0, gameW, gameH);
+  gameCtx.fillStyle = '#8878a8';
+  gameCtx.font = '16px sans-serif';
+  gameCtx.textAlign = 'center';
+  gameCtx.fillText('Press Start to play!', gameW/2, gameH/2);
+  updateGameHighScore();
+}
+
+function startGame() {
+  if (state.gameActive) return;
+  state.gameActive = true;
+  state.gameScore = 0;
+  gameTimeLeft = 30;
+  gameHearts = [];
+  document.getElementById('gameScore').textContent = '0';
+  document.getElementById('gameTimer').textContent = '30s';
+
+  gameIntervalId = setInterval(() => {
+    spawnGameHeart();
+    drawGame();
+  }, 80);
+
+  gameCountdownId = setInterval(() => {
+    gameTimeLeft--;
+    document.getElementById('gameTimer').textContent = gameTimeLeft + 's';
+    if (gameTimeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function spawnGameHeart() {
+  if (Math.random() < 0.15) {
+    gameHearts.push({
+      x: Math.random() * (gameW - 40) + 20,
+      y: 0,
+      size: Math.random() * 20 + 16,
+      speed: Math.random() * 3 + 1.5,
+      char: Math.random() < 0.8 ? '❤️' : '💖',
+      hit: false,
+      opacity: 1,
+    });
+  }
+  gameHearts = gameHearts.filter(h => h.y < gameH + 40 && h.opacity > 0);
+  gameHearts.forEach(h => { h.y += h.speed; if (h.hit) h.opacity -= 0.08; });
+}
+
+function drawGame() {
+  gameCtx.clearRect(0, 0, gameW, gameH);
+  // Background
+  gameCtx.fillStyle = 'rgba(13,5,24,0.85)';
+  gameCtx.fillRect(0, 0, gameW, gameH);
+
+  gameHearts.forEach(h => {
+    gameCtx.save();
+    gameCtx.globalAlpha = h.opacity;
+    gameCtx.font = `${h.size}px serif`;
+    gameCtx.textAlign = 'center';
+    gameCtx.fillText(h.char, h.x, h.y);
+    gameCtx.restore();
+  });
+}
+
+function gameClick(e) {
+  if (!state.gameActive) return;
+  const canvas = document.getElementById('gameCanvas');
+  const rect = canvas.getBoundingClientRect();
+  const cx = e.clientX - rect.left;
+  const cy = e.clientY - rect.top;
+
+  let hit = false;
+  for (const h of gameHearts) {
+    if (!h.hit && Math.abs(cx - h.x) < h.size && Math.abs(cy - h.y) < h.size) {
+      h.hit = true;
+      state.gameScore += 10;
+      document.getElementById('gameScore').textContent = state.gameScore;
+      spawnFloatHeart(e.clientX, e.clientY);
+      hit = true;
+    }
+  }
+}
+
+function endGame() {
+  clearInterval(gameIntervalId);
+  clearInterval(gameCountdownId);
+  state.gameActive = false;
+
+  if (state.gameScore > state.gameHighScore) {
+    state.gameHighScore = state.gameScore;
+    saveState();
+    triggerMiniConfetti();
+    showToast('🏆 New high score: ' + state.gameScore + '!');
+  }
+
+  gameCtx.fillStyle = 'rgba(0,0,0,0.7)';
+  gameCtx.fillRect(0, 0, gameW, gameH);
+  gameCtx.fillStyle = '#e8a4b8';
+  gameCtx.font = 'bold 28px serif';
+  gameCtx.textAlign = 'center';
+  gameCtx.fillText('💖 ' + state.gameScore + ' pts!', gameW/2, gameH/2);
+  gameCtx.font = '16px sans-serif';
+  gameCtx.fillStyle = '#a8a0c0';
+  gameCtx.fillText('Best: ' + state.gameHighScore, gameW/2, gameH/2 + 35);
+
+  updateGameHighScore();
+}
+
+function updateGameHighScore() {
+  const el = document.getElementById('gameHighScore');
+  if (el) el.textContent = state.gameHighScore > 0 ? `🏆 Best: ${state.gameHighScore} pts` : '';
+}
+
+/* =============================================
+   VOICE RECORDER
+============================================= */
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+
+async function toggleRecording() {
+  if (!isRecording) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          state.voiceRecordings.unshift({
+            id: Date.now(),
+            name: 'Voice Message ' + new Date().toLocaleTimeString(),
+            dataUrl: e.target.result,
+          });
+          renderVoiceRecordings();
+          saveState();
+        };
+        reader.readAsDataURL(blob);
+        stream.getTracks().forEach(t => t.stop());
+      };
+
+      mediaRecorder.start();
+      isRecording = true;
+      document.getElementById('recordBtn').classList.add('recording');
+      document.getElementById('recordStatus').textContent = '🔴 Recording... Tap to stop';
+    } catch(e) {
+      showToast('❌ Microphone access denied');
+    }
+  } else {
+    mediaRecorder.stop();
+    isRecording = false;
+    document.getElementById('recordBtn').classList.remove('recording');
+    document.getElementById('recordStatus').textContent = 'Tap to start recording';
+  }
+}
+
+function renderVoiceRecordings() {
+  const container = document.getElementById('voiceRecordings');
+  if (!state.voiceRecordings.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎤</div>No recordings yet</div>`;
+    return;
+  }
+  container.innerHTML = state.voiceRecordings.map(r => `
+    <div class="recording-item">
+      <span>🎤</span>
+      <div style="flex:1">
+        <div style="color:var(--text);font-size:0.9rem">${r.name}</div>
+      </div>
+      <button class="player-btn" onclick="playVoice('${r.id}')">▶</button>
+      <button class="dream-delete" onclick="deleteVoice('${r.id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function playVoice(id) {
+  const rec = state.voiceRecordings.find(r => String(r.id) === String(id));
+  if (!rec) return;
+  const audio = new Audio(rec.dataUrl);
+  audio.play();
+}
+
+function deleteVoice(id) {
+  state.voiceRecordings = state.voiceRecordings.filter(r => String(r.id) !== String(id));
+  renderVoiceRecordings();
+  saveState();
+}
+
+/* =============================================
+   LOVE MAP
+============================================= */
+const DEFAULT_MAP_NOTES = [
+  { id: 1, place: 'Where We First Met', memory: 'The universe conspired to bring us together that magical day 🌟' },
+  { id: 2, place: 'Our Favorite Café', memory: 'Hours of conversation, cups of warmth, and a growing love ☕' },
+  { id: 3, place: 'The Park', memory: 'Golden hour walks and quiet moments of pure happiness 🌿' },
+];
+
+function addMapNote() {
+  const place = document.getElementById('mapPlace').value.trim();
+  const memory = document.getElementById('mapMemory').value.trim();
+  if (!place) return;
+  state.mapNotes.push({ id: Date.now(), place, memory });
+  document.getElementById('mapPlace').value = '';
+  document.getElementById('mapMemory').value = '';
+  renderMapNotes();
+  saveState();
+}
+
+function renderMapNotes() {
+  const container = document.getElementById('mapNotesList');
+  const notes = state.mapNotes.length ? state.mapNotes : DEFAULT_MAP_NOTES;
+  container.innerHTML = notes.map(n => `
+    <div class="map-note">
+      <div class="map-note-title">📍 ${n.place}</div>
+      <div class="map-note-text">${n.memory}</div>
+    </div>
+  `).join('');
+}
+
+/* =============================================
+   CONFETTI
+============================================= */
+const confCanvas = document.getElementById('confettiCanvas');
+const confCtx = confCanvas.getContext('2d');
+let confParticles = [];
+
+function resizeConfCanvas() {
+  confCanvas.width = window.innerWidth;
+  confCanvas.height = window.innerHeight;
+}
+
+function triggerConfetti() {
+  confParticles = [];
+  const colors = ['#e8a4b8','#d4a064','#a78bca','#f0c070','#80c4a8','#e8c89a'];
+  for (let i = 0; i < 120; i++) {
+    confParticles.push({
+      x: Math.random() * window.innerWidth,
+      y: -20,
+      w: Math.random() * 10 + 4,
+      h: Math.random() * 16 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedY: Math.random() * 5 + 2,
+      speedX: (Math.random() - 0.5) * 4,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.2,
+      opacity: 1,
+    });
+  }
+  animConfetti();
+  setTimeout(() => { confParticles = []; confCtx.clearRect(0,0,confCanvas.width,confCanvas.height); }, 3000);
+}
+
+function triggerMiniConfetti() {
+  // Smaller burst
+  const colors = ['#e8a4b8','#d4a064','#a78bca'];
+  for (let i = 0; i < 40; i++) {
+    confParticles.push({
+      x: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+      y: window.innerHeight / 2,
+      w: Math.random() * 8 + 3,
+      h: Math.random() * 12 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedY: (Math.random() - 0.5) * 8 - 3,
+      speedX: (Math.random() - 0.5) * 8,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.3,
+      opacity: 1,
+    });
+  }
+  animConfetti();
+  setTimeout(() => { confCtx.clearRect(0,0,confCanvas.width,confCanvas.height); }, 2000);
+}
+
+function animConfetti() {
+  if (!confParticles.length) return;
+  confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+  confParticles = confParticles.filter(p => p.opacity > 0 && p.y < confCanvas.height + 50);
+  confParticles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.speedY += 0.1;
+    p.rotation += p.rotSpeed;
+    p.opacity -= 0.012;
+    confCtx.save();
+    confCtx.translate(p.x, p.y);
+    confCtx.rotate(p.rotation);
+    confCtx.globalAlpha = p.opacity;
+    confCtx.fillStyle = p.color;
+    confCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    confCtx.restore();
+  });
+  if (confParticles.length) requestAnimationFrame(animConfetti);
+}
+
+/* =============================================
+   TOAST NOTIFICATIONS
+============================================= */
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  toast.style.cssText = `
+    position:fixed;bottom:7rem;left:50%;transform:translateX(-50%);
+    background:rgba(26,10,46,0.95);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.15);
+    padding:0.7rem 1.4rem;border-radius:50px;
+    color:var(--text);font-family:var(--font-body);font-size:0.9rem;
+    z-index:700;animation:fadeInUp 0.3s ease;
+    white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; setTimeout(() => toast.remove(), 300); }, 2500);
+}
+
+/* =============================================
+   PWA SERVICE WORKER REGISTRATION
+============================================= */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW reg failed:', e));
+  });
+}
+
+/* =============================================
+   INIT
+============================================= */
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  resizeConfCanvas();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  resizeCanvas();
+  resizeConfCanvas();
+  loadState();
+  initHero();
+  animateParticles();
+
+  // Restore settings UI
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) themeToggle.checked = state.theme === 'light';
+
+  const particleToggle = document.getElementById('particleToggle');
+  if (particleToggle) particleToggle.checked = state.particlesOn;
+
+  const volSlider = document.getElementById('volumeSlider');
+  if (volSlider) volSlider.value = state.volume;
+
+  applyTheme();
+});
 </script>
 </body>
 </html>
