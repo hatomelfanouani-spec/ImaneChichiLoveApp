@@ -25,9 +25,31 @@
   "screenshots": [
     {
       "src": "screenshots/screenshot-1.png",
-      "sizes": "1280x720",
+      "sizes": "1920x1080",
       "type": "image/png",
-      "platform": "wide"
+      "platform": "wide",
+      "label": "Imane ♡ Love Story Home"
+    },
+    {
+      "src": "screenshots/screenshot-2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Memories Gallery"
+    },
+    {
+      "src": "screenshots/screenshot-3.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Romantic Moments"
+    },
+    {
+      "src": "screenshots/screenshot-4.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Love Messages"
     }
   ]
 }

@@ -1,103 +1,38 @@
-# 💖 Imane Chichi — Cinematic Love Story App v2
+# 💖 Imane Chichi — Cinematic Love Story App
 
-> *A highly cinematic, romantic, fully customizable, interactive love story app*
-
----
-
-## ✨ What's New in v2
-
-- **6 color themes** + custom background images
-- **Font selector** (Classic, Modern, Romantic)
-- **Character photo** upload for the hair preview
-- **Background music** upload + per-session playback
-- **Voice recorder** with playback
-- **Love Map** with date field
-- **Custom events** (add your own countdowns)
-- **Custom timeline** entries
-- **Custom quotes** editor
-- **Dream categories** with progress tracker
-- **Data export/import** as JSON
-- **Custom names** (change "Imane" and "You" to anything)
-- **Achievement toasts** for every milestone
-- **Confetti** on unlock + high score
-- **Lightbox** with prev/next navigation
+## 🎁 About
+A premium, cinematic romantic PWA (Progressive Web App) — a private world of love, memories, music, and secret messages.
 
 ---
 
 ## 📱 How to Install on Android
 
-### Method 1: Open File Directly (No Internet)
-1. Copy the project folder to your Android device
+### Method 1: Direct File (No Internet Required)
+1. Copy the entire project folder to your Android device (via USB, WhatsApp, Google Drive, etc.)
 2. Open **Chrome** on Android
-3. Navigate to the `index.html` file (`file:///...`)
-4. Tap ⋮ (three dots) → **Add to Home Screen**
-5. Done! 🎉
+3. Tap the address bar, type `file:///` and navigate to the `index.html` file
+4. Chrome will show **"Add to Home Screen"** banner or tap ⋮ → **Add to Home Screen**
+5. The app installs like a native app with its own icon! 🎉
 
-### Method 2: Host Online (Best Experience — enables PWA fully)
-1. Upload folder to **Netlify Drop**: drag to [app.netlify.com/drop](https://app.netlify.com/drop)
-2. Open the given URL in Chrome on Android
-3. Chrome will show "Add to Home Screen" banner
-4. Or tap ⋮ → **Add to Home Screen**
+### Method 2: Host Online (Recommended for Best Experience)
+1. Upload all files to a free host:
+   - **Netlify Drop**: drag folder to [app.netlify.com/drop](https://app.netlify.com/drop) — free, instant!
+   - **GitHub Pages**: push to a public repo, enable Pages
+   - **Vercel**: `npx vercel` in the folder
+2. Open the URL in Chrome on Android
+3. Tap ⋮ (three dots) → **Add to Home Screen**
+4. Done! ✨
 
-### Method 3: Local Dev Server
+### Method 3: Using Local Server (Developer)
 ```bash
+# Python
 python3 -m http.server 8080
-# or
+
+# Node.js
 npx serve .
-# then open http://localhost:8080
+
+# Then open: http://localhost:8080
 ```
-
----
-
-## 🤖 Build as Android APK (TWA)
-
-### Using Bubblewrap (Google's official tool)
-
-**Prerequisites:** Node.js 16+, Android Studio with SDK, Java 8+
-
-```bash
-# 1. Install Bubblewrap
-npm install -g @bubblewrap/cli
-
-# 2. Initialize TWA project (replace URL with your hosted URL)
-mkdir imane-love-twa && cd imane-love-twa
-bubblewrap init --manifest https://YOUR_HOSTED_URL/manifest.json
-
-# 3. Configure when prompted:
-#    - Package name: com.imanelove.app
-#    - App name: Imane ♡
-#    - Display: standalone
-#    - Orientation: portrait
-
-# 4. Build debug APK
-bubblewrap build
-
-# 5. Output: app-release-signed.apk
-```
-
-### Using PWA Builder (Easiest)
-1. Host your app at a URL (Netlify free tier works)
-2. Go to [pwabuilder.com](https://www.pwabuilder.com)
-3. Enter your URL → click **Package for Stores**
-4. Select **Android** → download APK/AAB
-
-### Using Capacitor (Full Native)
-```bash
-npm install -g @capacitor/cli
-npm init -y
-npm install @capacitor/core @capacitor/android
-
-# Initialize
-npx cap init "Imane Love" com.imanelove.app --web-dir .
-
-# Copy web files
-npx cap add android
-
-# Open in Android Studio
-npx cap open android
-```
-
-Then in Android Studio: Build → Generate Signed Bundle / APK
 
 ---
 
@@ -106,73 +41,71 @@ Then in Android Studio: Build → Generate Signed Bundle / APK
 0 4 1 7
 ```
 *(Imane's birthday: April 17th)*
-Change in: Settings → Security → Change PIN
 
 ---
 
-## ✨ All Features
+## ✨ Features
 
 | Feature | Description |
 |---------|-------------|
-| 🔐 PIN Lock | 4-digit private access |
+| 🔐 PIN Lock | Private access with custom 4-digit PIN |
 | 🎬 Cinematic Hero | Full-screen animated intro with love counter |
-| 💌 Love Letters | Write, mood-tag & save private letters |
-| 🎵 Songs | Upload MP3s with audio visualizer |
-| 💇 Hair Colors | Color picker + photo face overlay |
-| 📸 Gallery | Photo upload with lightbox + captions |
-| 🌺 Quotes | 14 built-in + custom quotes editor |
-| 🌙 Events | Countdowns + add custom events |
-| ✨ Dreams | Checklist with categories & progress bar |
-| 📜 Timeline | Story timeline + add your own events |
-| 🔐 Secret Heart | Click 20× to unlock hidden message |
+| 🌳 Magic Love Tree | Interactive tree where fruits open sections |
+| 💌 Love Letters | Write, save & delete private letters |
+| 🎵 Song Player | Upload MP3s, play with audio visualizer |
+| 💇 Hair Colors | Color picker with visual preview |
+| 📸 Memory Gallery | Photo upload with fullscreen lightbox |
+| 🌺 Love Quotes | 14 rotating romantic quotes |
+| 🌙 Events Planner | Countdowns for Eid, Anniversary, Birthday |
+| ✨ Dreams & Goals | Checklist with completion animations |
+| 📜 Timeline | Animated story timeline from first meeting |
+| 🔐 Secret Heart | Click 20 times to unlock hidden message |
 | 🎮 Mini Game | Tap falling hearts — beat your high score! |
 | 🎤 Voice Recorder | Record & play voice messages |
-| 🗺️ Love Map | Save special places with memories |
-| ⚙️ Settings | Theme, fonts, BG, volume, PIN, names |
-| 🎨 6 Themes | Rose, Rose Gold, Lavender, Emerald, Sunset, Ocean |
-| 🖼️ Custom BG | Upload your own background image |
-| 🔤 3 Fonts | Classic / Modern / Romantic |
-| 💾 Export/Import | Backup all data as JSON |
-| 🎉 Confetti | On achievements and unlocks |
-| 💖 Particles | Floating hearts & sparkles |
-| 📱 PWA | Installable, offline-capable |
+| 🗺️ Love Map | Save special places & memories |
+| ⚙️ Settings | Theme colors, dark/light mode, volume, PIN |
+| 💖 Particles | Floating hearts & stars background |
+| 🎉 Confetti | Triggers on achievements & secrets |
+| 📱 PWA | Installable, offline-capable app |
 
 ---
 
-## 🎨 Customization Guide
+## 🎨 Customization
 
-### Change Names
-Settings → Personalization → Enter names → Save
+### Change the PIN
+Open Settings (⚙️ icon) → Security → Change PIN
 
-### Change PIN
-Settings → Security → Change PIN
-
-### Change Theme Color
-Settings → Appearance → Theme Color (6 options)
-
-### Upload Background
-Settings → Background → 📷 (last option)
-
-### Add Custom Background Music
-Settings → Audio → Upload BG Music → toggle on
-
-### Edit Secret Message
-Settings → Security → Edit Secret Message
+### Change Dates
+In `index.html`, find these lines at the top of the script:
+```javascript
+const BIRTH_DATE = new Date('2003-04-17');  // Birthday
+const FIRST_MEETING = new Date('2024-07-09'); // First meeting date
+```
 
 ### Add Custom Quotes
-Quotes panel → scroll down → Add your own quote
+Find `const LOVE_QUOTES = [` and add more entries:
+```javascript
+{ text: "Your quote here", author: "— Author" },
+```
 
 ### Add Timeline Events
-Timeline panel → scroll down → Add a memory form
+Find `const TIMELINE_EVENTS = [` and add:
+```javascript
+{ date: 'YYYY-MM-DD', title: 'Event Name 💕', desc: 'Description...' },
+```
+
+### Change Colors
+In Settings → Theme Color, choose from 5 built-in palettes.
+Or edit `const THEME_COLORS` in the script for custom colors.
 
 ---
 
 ## 📁 File Structure
 ```
 imane-love-app/
-├── index.html          ← Complete app (self-contained)
-├── manifest.json       ← PWA manifest
-├── sw.js               ← Service Worker (offline)
+├── index.html        ← Main app (entire app in one file)
+├── manifest.json     ← PWA manifest
+├── sw.js             ← Service Worker (offline support)
 ├── icons/
 │   ├── icon-72.png
 │   ├── icon-96.png
@@ -180,27 +113,40 @@ imane-love-app/
 │   ├── icon-144.png
 │   ├── icon-192.png
 │   └── icon-512.png
-├── generate_icons.py   ← Icon generator script
 └── README.md
 ```
 
 ---
 
 ## 💾 Data Storage
-All data is stored in **localStorage** (your device only):
-- Love letters, photos, songs, hair styles
-- Dreams, timeline, events, voice recordings
-- Settings, PIN, custom themes
+All data is saved locally in your browser's **localStorage**:
+- Love letters
+- Uploaded songs
+- Photos
+- Hair styles
+- Dreams & goals
+- Voice recordings
+- Game high score
+- Settings
 
-**Zero data leaves your device** — 100% private.
+**No data is ever sent anywhere** — this is 100% private.
 
-> ⚠️ Clearing browser data will delete content.
-> Use Settings → Export Data to back up regularly.
+> ⚠️ **Note**: Clearing browser data / cache will delete saved content.
+> For important photos/songs, also keep originals elsewhere.
+
+---
+
+## 🚀 Optional Improvements
+- Replace placeholder icons with a custom heart logo
+- Add a real background music track (MP3 → base64 embed)
+- Integrate Firebase for cloud backup
+- Add real GPS coordinates to the Love Map
+- Add push notifications for daily love messages
+- Build as Android APK using TWA (Trusted Web Activity) via Bubblewrap CLI
 
 ---
 
 ## ❤️ Made with love
-
-*Every line crafted with care for one special person.*
+*Every line of this app was crafted with care for one special person.*
 
 > *"You are my today and all of my tomorrows."*
