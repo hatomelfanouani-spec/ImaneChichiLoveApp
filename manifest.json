@@ -4,6 +4,7 @@
   "description": "A cinematic love story — a private world of memories, music, and love.",
   "start_url": "./",
   "scope": "./",
+  "id": "/",
   "display": "standalone",
   "background_color": "#0d0518",
   "theme_color": "#ff4d6d",
@@ -19,6 +20,14 @@
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide"
     }
   ]
 }
