@@ -300,11 +300,29 @@
        TREE SECTION
     ========================================= */
     #treeSection {
-      padding: 80px 1rem 4rem;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center;
-    }
+  padding: 80px 1rem 4rem;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center;
+  background: url('backgrounds/tree-bg.png') center center / cover no-repeat fixed;
+  position: relative;
+}
+
+#treeSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+#treeSection > * {
+  position: relative;
+  z-index: 1;
+}
 
     .tree-header {
       text-align: center; margin-bottom: 1rem;
@@ -1352,11 +1370,29 @@
 
     /* Magic Love Tree Background */
     #treeSection {
-        background: linear-gradient(180deg, rgba(26,10,46,0.7), rgba(13,5,24,0.85)), url('backgrounds/tree-bg.png');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
+  padding: 80px 1rem 4rem;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center;
+  background: url('backgrounds/tree-bg.png') center center / cover no-repeat fixed;
+  position: relative;
+}
+
+#treeSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+#treeSection > * {
+  position: relative;
+  z-index: 1;
+}
 
     /* =========================================
        BRIGHTNESS & PHONE OPTIMIZATION FIXES
@@ -1364,8 +1400,29 @@
     
     /* Make backgrounds brighter and clearer */
     .panel-inner, #treeSection {
-        background-blend-mode: overlay !important;
-    }
+  padding: 80px 1rem 4rem;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center;
+  background: url('backgrounds/tree-bg.png') center center / cover no-repeat fixed;
+  position: relative;
+}
+
+#treeSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+#treeSection > * {
+  position: relative;
+  z-index: 1;
+}
     
     /* Increase contrast for better visibility */
     .panel-body, .letter-card, .song-card, .dream-item, .event-card, .quote-card {
@@ -1423,8 +1480,29 @@
     
     /* Make tree section brighter */
     #treeSection {
-        background-blend-mode: normal !important;
-    }
+  padding: 80px 1rem 4rem;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center;
+  background: url('backgrounds/tree-bg.png') center center / cover no-repeat fixed;
+  position: relative;
+}
+
+#treeSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+#treeSection > * {
+  position: relative;
+  z-index: 1;
+}
     
     /* Better contrast for text on backgrounds */
     .panel-body {
@@ -1444,6 +1522,96 @@
     .panel-title, .event-name, .timeline-title, .map-note-title {
         color: #ffb8d0 !important;
         text-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
+    }
+
+
+    /* =========================================
+       PANEL BACKGROUNDS WITH BRIGHTNESS
+    ========================================= */
+    #lettersPanel .panel-inner { background: url('backgrounds/love-letters-bg.png') center center / cover no-repeat !important; }
+    #songsPanel .panel-inner { background: url('backgrounds/music-bg.png') center center / cover no-repeat !important; }
+    #hairPanel .panel-inner { background: url('backgrounds/tree-bg.png') center center / cover no-repeat !important; }
+    #galleryPanel .panel-inner { background: url('backgrounds/gallery-bg.png') center center / cover no-repeat !important; }
+    #quotesPanel .panel-inner { background: url('backgrounds/quotes-bg.png') center center / cover no-repeat !important; }
+    #eventsPanel .panel-inner { background: url('backgrounds/map-bg.png') center center / cover no-repeat !important; }
+    #dreamsPanel .panel-inner { background: url('backgrounds/dreams-bg.png') center center / cover no-repeat !important; }
+    #timelinePanel .panel-inner { background: url('backgrounds/timeline-bg.png') center center / cover no-repeat !important; }
+    #secretPanel .panel-inner { background: url('backgrounds/hero-bg.png') center center / cover no-repeat !important; }
+    #settingsPanel .panel-inner { background: url('backgrounds/settings-bg.png') center center / cover no-repeat !important; }
+    #gamePanel .panel-inner { background: url('backgrounds/game-bg.png') center center / cover no-repeat !important; }
+    #voicePanel .panel-inner { background: url('backgrounds/music-bg.png') center center / cover no-repeat !important; }
+    #mapPanel .panel-inner { background: url('backgrounds/map-bg.png') center center / cover no-repeat !important; }
+
+
+    /* =========================================
+       BRIGHTNESS & TEXT FIXES
+    ========================================= */
+    .panel-body, .letter-card, .song-card, .dream-item, .event-card, .quote-card {
+      background: rgba(13,5,24,0.75) !important;
+      backdrop-filter: brightness(1.2) blur(8px) !important;
+      border-radius: 20px !important;
+    }
+    
+    .letter-text, .dream-text, .timeline-desc, .map-note-text, .quote-text {
+      color: white !important;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8) !important;
+      font-weight: 500 !important;
+    }
+    
+    .panel-title, .event-name, .timeline-title, .map-note-title {
+      color: #ffb8d0 !important;
+      text-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
+    }
+    
+    .panel-inner {
+      background: rgba(26,10,46,0.85) !important;
+      backdrop-filter: blur(10px) brightness(1.1) !important;
+    }
+    
+    /* Fix for panel content visibility */
+    .panel-body {
+      background: transparent !important;
+    }
+    
+    /* Make all text brighter */
+    body, p, span, div, button {
+      color: #fff5f0 !important;
+    }
+    
+    /* Heart counter and tree text */
+    .heart-count, .dm-text, .tree-header h2, .tree-header p {
+      text-shadow: 0 0 10px rgba(0,0,0,0.8) !important;
+      color: white !important;
+    }
+
+
+    /* =========================================
+       MOBILE TOUCH FIXES
+    ========================================= */
+    @media (max-width: 768px) {
+      .fruit-btn {
+        width: 55px !important;
+        height: 55px !important;
+        font-size: 1.2rem !important;
+      }
+      .fruit-btn span.fruit-label {
+        font-size: 0.45rem !important;
+      }
+      .top-bar-title {
+        font-size: 0.9rem !important;
+      }
+      .panel-inner {
+        max-height: 85vh !important;
+      }
+      .hero-title {
+        font-size: clamp(1.8rem, 8vw, 3rem) !important;
+      }
+    }
+    
+    /* Touch feedback */
+    .fruit-btn:active, .pin-key:active, .icon-btn:active {
+      transform: scale(0.95) !important;
+      transition: transform 0.05s ease !important;
     }
 
 </style>
